@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/book")
@@ -36,6 +37,14 @@ public class BookRestController {
     @GetMapping(params = "author")
     public Book searchBookByAuthor(@RequestParam String author) {
         return this.books.stream().filter(book -> hasAuthor(book, author)).findFirst().orElseThrow();
+    }
+
+    @PostMapping("/search")
+    public List<Book> searchBooks(@RequestBody BookSearchRequest request) {
+        return this.books.stream()
+                .filter(book -> hasAuthor(book, request.getAuthor()))
+                .filter(book -> hasIsbn(book, request.getIsbn()))
+                .collect(Collectors.toUnmodifiableList());
     }
 
     private boolean hasIsbn(Book book, String isbn) {
