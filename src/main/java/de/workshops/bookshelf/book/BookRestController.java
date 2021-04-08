@@ -36,6 +36,6 @@ public class BookRestController {
 
     @ExceptionHandler(BookException.class)
     public ResponseEntity<String> error(BookException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.I_AM_A_TEAPOT);
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 }
