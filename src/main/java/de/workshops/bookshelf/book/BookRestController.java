@@ -2,9 +2,7 @@ package de.workshops.bookshelf.book;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
@@ -28,5 +26,23 @@ public class BookRestController {
     @GetMapping
     public List<Book> getAllBooks() {
         return books;
-    } 
+    }
+
+    @GetMapping("/{isbn}")
+    public Book getSingleBook(@PathVariable String isbn) {
+        return this.books.stream().filter(book -> hasIsbn(book, isbn)).findFirst().orElseThrow();
+    }
+
+    @GetMapping(params = "author")
+    public Book searchBookByAuthor(@RequestParam String author) {
+        return this.books.stream().filter(book -> hasAuthor(book, author)).findFirst().orElseThrow();
+    }
+
+    private boolean hasIsbn(Book book, String isbn) {
+        return book.getIsbn().equals(isbn);
+    }
+
+    private boolean hasAuthor(Book book, String author) {
+        return book.getAuthor().contains(author);
+    }
 }
