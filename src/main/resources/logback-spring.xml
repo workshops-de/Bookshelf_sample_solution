@@ -1,0 +1,90 @@
+<configuration scan="true" scanPeriod="10 seconds" debug="false">
+    <springProfile name="default"><!-- no date, ansi colored, no file -->
+        <!-- switch from long to short debug log -->
+        <property name="PATTERN"
+                  value="%d{HH:mm:ss.SSS} [%X{user}] %highlight(%-5level) %highlight(%48.48logger) - %msg%n"/>
+    </springProfile>
+    <springProfile name="jenkins"><!-- date, no color, no file -->
+        <property name="PATTERN"
+                  value="%d{dd.MM.yyyy HH:mm:ss.SSS} [%X{user}] [%thread] %-5level %logger{36} - %msg%n"/>
+    </springProfile>
+    <springProfile name="prod"><!-- no color but file -->
+        <property name="PATTERN"
+                  value="%d{dd.MM.yyyy HH:mm:ss.SSS} [%X{user}] [%thread] %-5level %logger{36} - %msg%n"/>
+        <property name="LOGFILE" value="workshop"/>
+    </springProfile>
+
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <springProfile name="prod"><!-- no color but file -->
+        <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${LOGFILE}.log</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <!-- Daily rollover -->
+                <fileNamePattern>${LOGFILE}_%d{yyyy-MM-dd}.log</fileNamePattern>
+                <maxHistory>30</maxHistory>
+            </rollingPolicy>
+            <encoder>
+                <pattern>${PATTERN}</pattern>
+            </encoder>
+        </appender>
+    </springProfile>
+
+    <!-- For all those not explicitly defined below use this log level: -->
+    <root level="INFO">
+        <springProfile name="default, jenkins">
+            <appender-ref ref="STDOUT"/>
+        </springProfile>
+        <springProfile name="prod">
+            <appender-ref ref="FILE"/>
+        </springProfile>
+    </root>
+
+    <logger name="de.workshops" level="debug"/>
+
+    <!-- debug, info, warning, severe, off -->
+    <logger name="liquibase" level="warn"/>
+    <logger name="org.springframework" level="warn"/>
+    <logger name="com.zaxxer.hikari" level="info"/>
+    <logger name="org.apache" level="warn"/>
+
+    <logger name="org.hibernate" level="warn"/>
+    <logger name="org.hibernate.SQL" level="warn"/>
+    <logger name="org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator"
+            level="debug"/> <!-- database connections -->
+
+    <!-- <logger name="org.hibernate.type" level="trace" /> --> <!-- SQL parameters -->
+    <!-- <logger name="org.hibernate.envers" level="debug" /> -->
+    <!-- <logger name="org.hibernate.integrator" level="debug" /> -->
+    <!-- <logger name="org.hibernate.persister.entity" level="trace" /> -->
+    <!-- <logger name="org.hibernate.stat" level="debug" /> -->
+    <!-- <logger name="org.hibernate.resource.jdbc.internal" level="debug" /> -->
+    <!-- <logger name="org.apache.tomcat.jdbc" level="debug" /> -->
+
+    <!-- <logger name="org.springframework.jdbc.datasource.DriverManagerDataSource" level="warn"/> -->
+    <!-- <logger name="org.springframework.beans.factory.support.DefaultListableBeanFactory" level="warn" /> -->
+    <!-- <logger name="org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader" level="warn" /> -->
+    <!-- <logger name="org.springframework.core.env.PropertySourcesPropertyResolver" level="warn" /> -->
+    <!-- <logger name="org.springframework.core.env.MutablePropertySources" level="warn" /> -->
+    <!-- <logger name="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" level="warn" /> -->
+
+    <!-- <logger name="org.springframework.boot" level="debug" /> -->
+    <!-- <logger name="org.springframework.beans.factory.support" level="debug" /> -->
+    <!-- <logger name="org.springframework.core.io.support" level="debug" /> -->
+    <!-- <logger name="org.springframework.data" level="debug" /> -->
+    <!-- <logger name="org.springframework.jndi" level="debug" /> -->
+    <!-- <logger name="org.springframework.orm" level="debug" /> -->
+    <!-- <logger name="org.springframework.security" level="debug" />-->
+    <!-- <logger name="org.springframework.test" level="debug" /> -->
+    <!-- <logger name="org.springframework.transaction" level="debug" /> -->
+    <logger name="org.springframework.web" level="debug"/>
+
+    <!--  Used by the admin server client. -->
+    <!--  <logger name="org.springframework.web.client.RestTemplate" level="warn" /> -->
+    <!--  <logger name="org.springframework.web.filter.CommonsRequestLoggingFilter" level="debug" /> -->
+</configuration>
