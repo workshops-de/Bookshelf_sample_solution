@@ -8,12 +8,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/book")
+@RequestMapping(BookRestController.REQUEST_URL)
 @RequiredArgsConstructor
 public class BookRestController {
 
+    static final String REQUEST_URL = "/book";
+
     private final BookService bookService;
-    
+
     @GetMapping
     public List<Book> getAllBooks() {
         return bookService.getBooks();
