@@ -2,6 +2,7 @@ package de.workshops.bookshelf.book;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,5 +70,29 @@ class BookRestControllerIntegrationTest {
                 log().all().
                 statusCode(200).
                 body("author[0]", equalTo("Erich Gamma"));
+    }
+
+    @Test
+    void createBook() {
+        RestAssuredMockMvc.standaloneSetup(bookRestController);
+
+        Book book = new Book();
+        book.setAuthor("Eric Evans");
+        book.setTitle("Domain-Driven Design: Tackling Complexity in the Heart of Software");
+        book.setIsbn("978-0321125217");
+        book.setDescription("This is not a book about specific technologies. It offers readers a systematic approach to domain-driven design, presenting an extensive set of design best practices, experience-based techniques, and fundamental principles that facilitate the development of software projects facing complex domains.");
+
+        RestAssuredMockMvc.
+                given().
+                log().all().
+                body(book).
+                contentType(ContentType.JSON).
+                accept(ContentType.JSON).
+                when().
+                put("/book").
+                then().
+                log().all().
+                statusCode(200).
+                body("author", equalTo("Eric Evans"));
     }
 }

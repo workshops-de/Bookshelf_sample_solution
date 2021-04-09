@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,6 +17,6 @@ public class BookRepository {
     private final ObjectMapper mapper;
 
     public List<Book> getBooks() throws IOException {
-        return Arrays.asList(mapper.readValue(new File("target/classes/books.json"), Book[].class));
+        return new ArrayList<>(Arrays.asList(mapper.readValue(new File("target/classes/books.json"), Book[].class)));
     }
 }
