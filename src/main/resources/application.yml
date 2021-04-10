@@ -1,0 +1,12 @@
+application:
+  title: Bookshelf
+  version: 0.0.1
+
+---
+spring:
+  config:
+    activate:
+      on-profile:
+        - prod
+server:
+  port: 8090
