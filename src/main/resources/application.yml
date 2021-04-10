@@ -4,3 +4,7 @@ application:
 
 server:
   port: 8080
+
+bookshelf:
+  some-number: 11
+  some-text: More information
