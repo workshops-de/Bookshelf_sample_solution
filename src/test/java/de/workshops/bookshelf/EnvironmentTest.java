@@ -14,7 +14,7 @@ class EnvironmentTest {
 	private int port;
 
 	@Test
-	@EnabledIf(expression = "#{environment['spring.profiles.active'] == 'test-prod'}", loadContext = true)
+	@EnabledIf(expression = "#{environment['spring.profiles.active'] == 'prod'}", loadContext = true)
 	void verifyProdPort() {
 		assertEquals(8090, port);
 	}
