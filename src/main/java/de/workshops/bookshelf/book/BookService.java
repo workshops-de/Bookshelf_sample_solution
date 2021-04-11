@@ -5,8 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,13 +19,7 @@ public class BookService {
 
     @PostConstruct
     public void init() {
-        books = Collections.emptyList();
-
-        try {
-            books = bookRepository.getBooks();
-        } catch (IOException e) {
-            log.error(e.getMessage());
-        }
+        books = bookRepository.findAllBooks();
     }
 
     public List<Book> getBooks() {
