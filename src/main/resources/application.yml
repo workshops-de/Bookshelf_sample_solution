@@ -2,9 +2,22 @@ application:
   title: Bookshelf
   version: 0.0.1
 
-server:
-  port: 8080
-
 bookshelf:
   some-number: 11
   some-text: More information
+
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    open-in-view: false
+  h2:
+    console:
+      enabled: true
