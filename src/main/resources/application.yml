@@ -17,7 +17,12 @@ spring:
     initialization-mode: always
 
   jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
     open-in-view: false
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
+
+  liquibase:
+    enabled: true
+    drop-first: true
+    change-log: classpath:liquibase/changelog.xml
