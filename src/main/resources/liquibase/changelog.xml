@@ -48,4 +48,21 @@
             </sql>
         </rollback>
     </changeSet>
+
+    <!--
+        This is for demonstration purposes only.
+        Checking credentials of any kind into source control should be avoided.
+    -->
+    <changeSet author="workshops" id="updateDefaultAdmin">
+        <sql>
+            UPDATE "user" SET password = '$2a$10$vAiSOk2MzsgZ8EvDNSEkWuZ47.bSwEHTgnl4mN.Zgz4TrxZQ4S6Ee'
+            WHERE username = 'dbUser';
+        </sql>
+        <rollback>
+            <sql>
+                UPDATE "user" SET password = 'password'
+                WHERE username = 'dbUser';
+            </sql>
+        </rollback>
+    </changeSet>
 </databaseChangeLog>
