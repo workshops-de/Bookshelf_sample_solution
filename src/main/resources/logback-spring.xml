@@ -47,7 +47,7 @@
 
     <logger name="de.workshops" level="debug"/>
 
-    <!-- debug, info, warning, severe, off -->
+    <!-- debug, info, warn, severe, off -->
     <logger name="liquibase" level="warn"/>
     <logger name="org.springframework" level="warn"/>
     <logger name="com.zaxxer.hikari" level="info"/>
@@ -74,6 +74,7 @@
     <!-- <logger name="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" level="warn" /> -->
 
     <logger name="org.springframework.boot" level="info" />
+    <logger name="org.springframework.boot.devtools" level="warn" />
     <!-- <logger name="org.springframework.beans.factory.support" level="debug" /> -->
     <!-- <logger name="org.springframework.core.io.support" level="debug" /> -->
     <!-- <logger name="org.springframework.data" level="debug" /> -->
