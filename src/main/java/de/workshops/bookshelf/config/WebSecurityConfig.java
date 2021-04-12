@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,24 +26,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
-                .authorizeRequests().antMatchers("/").permitAll().and()
-                .authorizeRequests().antMatchers("/actuator/**").permitAll().and()
-                .authorizeRequests().anyRequest().authenticated().and()
-                    .formLogin()
-                        .successForwardUrl("/success")
-                        .successHandler(
-                                (request, response, authentication) -> {
-                                    UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-                                    jdbcTemplate.update(
-                                            "UPDATE \"user\" SET lastlogin = NOW() WHERE username = ?",
-                                            userDetails.getUsername()
-                                    );
-                                    response.sendRedirect("/success");
-                                }
-                        )
-                    .and()
-                .httpBasic();
+                .authorizeRequests().anyRequest().permitAll()
+                .and().csrf().disable();
     }
 
     @Override

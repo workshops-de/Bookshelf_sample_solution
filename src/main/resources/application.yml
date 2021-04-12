@@ -26,3 +26,12 @@ spring:
     enabled: true
     drop-first: true
     change-log: classpath:liquibase/changelog.xml
+  boot:
+    admin:
+      context-path: /admin
+      client:
+        url: http://localhost:8080/admin
+        instance:
+          metadata:
+            user.name: admin
+            user.password: admin
