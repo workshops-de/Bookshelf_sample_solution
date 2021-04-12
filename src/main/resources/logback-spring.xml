@@ -73,13 +73,13 @@
     <!-- <logger name="org.springframework.core.env.MutablePropertySources" level="warn" /> -->
     <!-- <logger name="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" level="warn" /> -->
 
-    <!-- <logger name="org.springframework.boot" level="debug" /> -->
+    <logger name="org.springframework.boot" level="info" />
     <!-- <logger name="org.springframework.beans.factory.support" level="debug" /> -->
     <!-- <logger name="org.springframework.core.io.support" level="debug" /> -->
     <!-- <logger name="org.springframework.data" level="debug" /> -->
     <!-- <logger name="org.springframework.jndi" level="debug" /> -->
     <!-- <logger name="org.springframework.orm" level="debug" /> -->
-    <!-- <logger name="org.springframework.security" level="debug" />-->
+    <logger name="org.springframework.security" level="info" />
     <!-- <logger name="org.springframework.test" level="debug" /> -->
     <!-- <logger name="org.springframework.transaction" level="debug" /> -->
     <logger name="org.springframework.web" level="debug"/>
