@@ -10,6 +10,7 @@ import java.util.List;
 @RestController
 @RequestMapping(BookRestController.REQUEST_URL)
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200")
 public class BookRestController {
 
     static final String REQUEST_URL = "/book";
