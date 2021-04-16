@@ -7,14 +7,20 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@SpringBootTest
+@SpringBootTest(
+        properties = {
+                "spring.datasource.url=jdbc:tc:postgresql:13:///springboot"
+        }
+)
 @ExtendWith(MockitoExtension.class)
+@Testcontainers
 class BookRestControllerMockitoReflectionTestUtilsTest {
 
     @Mock

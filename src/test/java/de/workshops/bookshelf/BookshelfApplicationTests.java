@@ -4,10 +4,16 @@ import de.workshops.bookshelf.config.BookshelfProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
+@SpringBootTest(
+		properties = {
+				"spring.datasource.url=jdbc:tc:postgresql:13:///springboot"
+		}
+)
+@Testcontainers
 class BookshelfApplicationTests {
 
 	@Autowired

@@ -2,8 +2,8 @@ package de.workshops.bookshelf.book;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,8 +12,11 @@ import java.util.stream.StreamSupport;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@DataJpaTest(properties = {
+        "spring.test.database.replace=NONE",
+        "spring.datasource.url=jdbc:tc:postgresql:13:///springboot"
+})
+@Testcontainers
 class BookRepositoryTest {
 
     @Autowired

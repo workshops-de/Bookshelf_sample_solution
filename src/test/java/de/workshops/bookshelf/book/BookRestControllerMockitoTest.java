@@ -5,13 +5,19 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@SpringBootTest
+@SpringBootTest(
+        properties = {
+                "spring.datasource.url=jdbc:tc:postgresql:13:///springboot"
+        }
+)
+@Testcontainers
 class BookRestControllerMockitoTest {
 
     @Autowired
