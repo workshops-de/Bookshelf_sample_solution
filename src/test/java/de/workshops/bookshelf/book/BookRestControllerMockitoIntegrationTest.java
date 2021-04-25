@@ -17,9 +17,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 class BookRestControllerMockitoIntegrationTest {
 
     @Autowired
-    private BookRestController bookRestController;
-
-    @Autowired
     private MockMvc mockMvc;
 
     @MockBean
