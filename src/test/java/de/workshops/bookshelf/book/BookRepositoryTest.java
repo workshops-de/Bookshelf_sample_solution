@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -49,7 +50,11 @@ class BookRepositoryTest {
     private Book buildBook(String isbn) {
         return Book.builder()
                 .title("Title")
-                .author("Author")
+                .authors(
+                        Collections.singletonList(
+                                Author.builder().name("Author").build()
+                        )
+                )
                 .description("Description")
                 .isbn(isbn)
                 .build();

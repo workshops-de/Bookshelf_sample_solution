@@ -7,7 +7,5 @@ import javax.transaction.Transactional;
 
 @RepositoryRestResource
 @Transactional
-public interface BookRepository extends CrudRepository<Book, Long> {
-
-    Book findByIsbn(String isbn);
+public interface AuthorRepository extends CrudRepository<Author, Long> {
 }

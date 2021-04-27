@@ -13,16 +13,12 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
-public class Book {
+public class Author {
 
+    String name;
+    @ManyToMany
+    List<Book> books;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String title;
-    private String description;
-    private String isbn;
-
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "books")
-    private List<Author> authors;
 }

@@ -12,7 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookRestController {
 
-    static final String REQUEST_URL = "/book";
+    static final String REQUEST_URL = "/v1/book";
 
     private final BookService bookService;
 

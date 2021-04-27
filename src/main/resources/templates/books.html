@@ -13,7 +13,7 @@
         <th th:text="Title" />
         <th th:text="Description" />
         <th th:text="ISBN" />
-        <th th:text="Author" />
+        <th th:text="Authors" />
     </tr>
     </thead>
     <tbody>
@@ -21,7 +21,11 @@
         <td th:text="${book.title}" />
         <td th:text="${book.description}" />
         <td th:text="${book.isbn}" />
-        <td th:text="${book.author}" />
+        <td>
+            <ul th:each="author : ${book.authors}">
+                <li th:text="${author.name}" />
+            </ul>
+        </td>
     </tr>
     </tbody>
 </table>

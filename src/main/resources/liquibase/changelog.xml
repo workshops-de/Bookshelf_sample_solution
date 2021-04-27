@@ -86,4 +86,53 @@
             </sql>
         </rollback>
     </changeSet>
+
+    <changeSet id="createTableAuthors" author="workshops">
+        <createTable tableName="author">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="name" type="varchar" />
+        </createTable>
+        <createTable tableName="author_books">
+            <column name="authors_id" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="books_id" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="author" />
+            <dropTable tableName="author_books" />
+        </rollback>
+    </changeSet>
+
+    <changeSet author="workshops" id="addDefaultAuthors">
+        <sql>
+            INSERT INTO author (name)
+            VALUES ('Erich Gamma');
+
+            INSERT INTO author (name)
+            VALUES ('Robert C. Martin');
+
+            INSERT INTO author (name)
+            VALUES ('Gottfried Wolmeringer');
+
+            INSERT INTO author_books (authors_id, books_id)
+            VALUES (1, 1);
+
+            INSERT INTO author_books (authors_id, books_id)
+            VALUES (2, 2);
+
+            INSERT INTO author_books (authors_id, books_id)
+            VALUES (3, 3);
+        </sql>
+        <rollback>
+            <sql>
+                DELETE FROM author;
+                DELETE FROM author_books;
+            </sql>
+        </rollback>
+    </changeSet>
 </databaseChangeLog>

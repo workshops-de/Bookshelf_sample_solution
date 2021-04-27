@@ -53,6 +53,6 @@ public class BookService {
     }
 
     private boolean hasAuthor(Book book, String author) {
-        return book.getAuthor().contains(author);
+        return book.getAuthors().contains(author);
     }
 }
