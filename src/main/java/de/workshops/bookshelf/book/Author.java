@@ -15,10 +15,12 @@ import java.util.List;
 @Entity
 public class Author {
 
-    String name;
-    @ManyToMany
-    List<Book> books;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    String name;
+
+    @ManyToMany
+    List<Book> books;
 }
