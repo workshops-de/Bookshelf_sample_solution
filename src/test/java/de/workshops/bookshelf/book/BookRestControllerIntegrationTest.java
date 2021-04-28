@@ -74,7 +74,7 @@ class BookRestControllerIntegrationTest {
                 given().
                 log().all().
                 when().
-                get("/book").
+                get(BookRestController.REQUEST_URL).
                 then().
                 log().all().
                 statusCode(200).
@@ -88,7 +88,7 @@ class BookRestControllerIntegrationTest {
                 auth().basic("dbUser", "workshops").
                 log().all().
                 when().
-                get("/book").
+                get(BookRestController.REQUEST_URL).
                 then().
                 log().all().
                 statusCode(200).
@@ -117,7 +117,7 @@ class BookRestControllerIntegrationTest {
                 contentType(ContentType.JSON).
                 accept(ContentType.JSON).
                 when().
-                put("/book").
+                put(BookRestController.REQUEST_URL).
                 then().
                 log().all().
                 statusCode(200).
