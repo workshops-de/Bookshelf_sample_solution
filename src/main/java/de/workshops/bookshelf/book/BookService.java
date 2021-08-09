@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,10 +37,18 @@ public class BookService {
     }
 
     public List<Book> searchBooks(BookSearchRequest request) {
+        /*
+         * Java 8 doesn't provide a "toUnmodifiableList" method.
+         * Starting with Java 10 we could simply use ".collect(Collectors.toUnmodifiableList())" here.
+         */
         return books.stream()
                 .filter(book -> hasAuthor(book, request.getAuthor()))
                 .filter(book -> hasIsbn(book, request.getIsbn()))
-                .collect(Collectors.toUnmodifiableList());
+                .collect(
+                        Collectors.collectingAndThen(
+                                Collectors.toList(),
+                                Collections::unmodifiableList
+                        ));
     }
 
     public Book createBook(Book book) {
