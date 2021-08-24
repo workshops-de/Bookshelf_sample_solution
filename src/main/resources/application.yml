@@ -11,11 +11,13 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/bookshelf
-    username: user
+    url: jdbc:h2:./testdb;DB_CLOSE_ON_EXIT=FALSE;DB_CLOSE_DELAY=-1;AUTO_SERVER=TRUE
+    driver-class-name: org.h2.Driver
+    username: sa
     password: password
   jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    database-platform: org.hibernate.dialect.H2Dialect
     open-in-view: false
-    hibernate:
-      ddl-auto: create-drop
+  h2:
+    console:
+      enabled: true
