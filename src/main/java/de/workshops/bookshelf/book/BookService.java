@@ -48,7 +48,8 @@ public class BookService {
                         Collectors.collectingAndThen(
                                 Collectors.toList(),
                                 Collections::unmodifiableList
-                        ));
+                        )
+                );
     }
 
     public Book createBook(Book book) {
