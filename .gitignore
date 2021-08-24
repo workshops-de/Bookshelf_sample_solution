@@ -58,3 +58,6 @@ build/
 
 ### macOS ###
 .DS_Store
+
+### H2 database files ###
+*.db
