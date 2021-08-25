@@ -11,17 +11,23 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/bookshelf
-    username: user
+    url: jdbc:h2:./testdb;DB_CLOSE_ON_EXIT=FALSE;DB_CLOSE_DELAY=-1;AUTO_SERVER=TRUE
+    driver-class-name: org.h2.Driver
+    username: sa
     password: password
-    initialization-mode: always
-
+  sql:
+    init:
+      mode: always
   jpa:
-    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+    database-platform: org.hibernate.dialect.H2Dialect
     open-in-view: false
+    generate-ddl: true
+    defer-datasource-initialization: true
     hibernate:
       ddl-auto: validate
-
+  h2:
+    console:
+      enabled: true
   liquibase:
     enabled: true
     drop-first: true
