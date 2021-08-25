@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-@Sql("/data.sql")
 class BookRestControllerIntegrationTest {
 
     @Autowired
@@ -33,6 +32,7 @@ class BookRestControllerIntegrationTest {
     private ObjectMapper objectMapper;
 
     @Test
+    @WithMockUser
     void getAllBooks() throws Exception {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(BookRestController.REQUEST_URL))
                 .andDo(MockMvcResultHandlers.print())
@@ -62,6 +62,7 @@ class BookRestControllerIntegrationTest {
     }
 
     @Test
+    @WithMockUser
     void testWithRestAssured() {
         RestAssured.
                 given().
