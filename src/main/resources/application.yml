@@ -26,3 +26,5 @@ spring:
   h2:
     console:
       enabled: true
+  liquibase:
+    drop-first: true
