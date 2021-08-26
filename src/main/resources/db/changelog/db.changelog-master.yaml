@@ -27,3 +27,52 @@ databaseChangeLog:
       rollback:
         - dropTable:
             tableName: book
+
+  - changeSet:
+      id: createTableUsers
+      author: workshops
+      changes:
+        - createTable:
+            tableName: user
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: username
+                  type: varchar
+                  constraints:
+                    unique: true
+              - column:
+                  name: password
+                  type: varchar
+              - column:
+                  name: firstname
+                  type: varchar
+              - column:
+                  name: lastname
+                  type: varchar
+              - column:
+                  name: role
+                  type: varchar
+              - column:
+                  name: lastlogin
+                  type: datetime
+      rollback:
+        - dropTable:
+            tableName: user
+
+  - changeSet:
+      id: createDefaultAdmin
+      author: workshops
+      changes:
+        - sql:
+            sql: >
+              INSERT INTO user (username, password, firstname, lastname, role)
+              VALUES ('dbUser', 'password', 'Default', 'Default', 'ADMIN');
+      rollback:
+        - sql:
+            sql: DELETE FROM user;
