@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: createTableBooks
+      author: workshops
+      changes:
+        - createTable:
+            tableName: book
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: title
+                  type: varchar
+              - column:
+                  name: author
+                  type: varchar
+              - column:
+                  name: isbn
+                  type: varchar
+              - column:
+                  name: description
+                  type: varchar
+      rollback:
+        - dropTable:
+            tableName: book
