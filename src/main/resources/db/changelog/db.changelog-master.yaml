@@ -27,6 +27,7 @@ databaseChangeLog:
       rollback:
         dropTable:
           tableName: book
+
   - changeSet:
       id: createTableUsers
       author: workshops
