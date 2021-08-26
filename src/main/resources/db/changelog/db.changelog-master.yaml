@@ -24,6 +24,6 @@ databaseChangeLog:
               - column:
                   name: description
                   type: varchar
-    rollback:
-      dropTable:
-        tableName: book
+      rollback:
+        - dropTable:
+            tableName: book
