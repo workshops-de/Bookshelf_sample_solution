@@ -61,7 +61,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public UserDetailsService userDetailsService() {
         return username -> {
-            String sql = "SELECT * FROM \"user\" WHERE username = ?";
+            String sql = "SELECT * FROM user WHERE username = ?";
 
             return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new User(
                     rs.getString("username"),
