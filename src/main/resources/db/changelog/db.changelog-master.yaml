@@ -76,3 +76,19 @@ databaseChangeLog:
       rollback:
         - sql:
             sql: DELETE FROM user;
+
+  # This is for demonstration purposes only.
+  # Checking credentials of any kind into source control should be avoided.
+  - changeSet:
+      id: updateDefaultAdmin
+      author: workshops
+      changes:
+        - sql:
+            sql: >
+              UPDATE user SET password = '$2a$10$vAiSOk2MzsgZ8EvDNSEkWuZ47.bSwEHTgnl4mN.Zgz4TrxZQ4S6Ee'
+              WHERE username = 'dbUser';
+      rollback:
+        - sql:
+            sql: >
+              UPDATE user SET password = 'password'
+              WHERE username = 'dbUser';
