@@ -1,3 +1,6 @@
+-- noinspection SqlWithoutWhere
+DELETE FROM book;
+
 INSERT INTO book (isbn, title, author, description)
 VALUES ('978-0201633610', 'Design Patterns', 'Erich Gamma',
         'Mit Design Patterns lassen sich wiederkehrende Aufgaben in der objektorientierten Softwareentwicklung effektiv lösen.');
