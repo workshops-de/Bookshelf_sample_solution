@@ -92,6 +92,7 @@ databaseChangeLog:
             sql: >
               UPDATE user SET password = 'password'
               WHERE username = 'dbUser';
+
   - changeSet:
       id: addDefaultBooks
       author: workshops
