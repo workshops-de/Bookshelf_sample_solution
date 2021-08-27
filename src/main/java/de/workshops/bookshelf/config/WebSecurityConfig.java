@@ -35,7 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                                 (request, response, authentication) -> {
                                     UserDetails userDetails = (UserDetails) authentication.getPrincipal();
                                     jdbcTemplate.update(
-                                            "UPDATE \"user\" SET lastlogin = NOW() WHERE username = ?",
+                                            "UPDATE user SET lastlogin = NOW() WHERE username = ?",
                                             userDetails.getUsername()
                                     );
                                     response.sendRedirect("/success");
