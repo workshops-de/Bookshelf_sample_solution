@@ -25,8 +25,8 @@ databaseChangeLog:
                   name: description
                   type: varchar
       rollback:
-        dropTable:
-          tableName: book
+        - dropTable:
+            tableName: book
 
   - changeSet:
       id: createTableUsers
