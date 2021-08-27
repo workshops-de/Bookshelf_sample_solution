@@ -30,8 +30,8 @@ class BookRepositoryTest {
                 .collect(Collectors.toList());
 
         assertNotNull(books);
-        assertEquals(1, books.size());
-        assertEquals(book.getTitle(), books.get(0).getTitle());
+        assertEquals(4, books.size());
+        assertEquals(book.getTitle(), books.get(3).getTitle());
     }
 
     @Test
