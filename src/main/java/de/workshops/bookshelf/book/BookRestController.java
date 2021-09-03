@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,7 +45,12 @@ public class BookRestController {
         return this.books.stream()
                 .filter(book -> hasAuthor(book, request.getAuthor()))
                 .filter(book -> hasIsbn(book, request.getIsbn()))
-                .collect(Collectors.toUnmodifiableList());
+                .collect(
+                        Collectors.collectingAndThen(
+                                Collectors.toList(),
+                                Collections::unmodifiableList
+                        )
+                );
     }
 
     private boolean hasIsbn(Book book, String isbn) {
