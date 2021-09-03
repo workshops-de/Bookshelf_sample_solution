@@ -14,7 +14,7 @@
 	<name>Bookshelf</name>
 	<description>Sample roject for Spring Boot Workshop</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>8</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
