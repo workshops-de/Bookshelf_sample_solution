@@ -30,13 +30,13 @@ public class BookRestController {
     }
 
     @GetMapping("/{isbn}")
-    public Book getSingleBook(@PathVariable String isbn) {
-        return this.books.stream().filter(book -> hasIsbn(book, isbn)).findFirst().orElseThrow();
+    public Book getSingleBook(@PathVariable String isbn) throws Exception {
+        return this.books.stream().filter(book -> hasIsbn(book, isbn)).findFirst().orElseThrow(Exception::new);
     }
 
     @GetMapping(params = "author")
-    public Book searchBookByAuthor(@RequestParam String author) {
-        return this.books.stream().filter(book -> hasAuthor(book, author)).findFirst().orElseThrow();
+    public Book searchBookByAuthor(@RequestParam String author) throws Exception {
+        return this.books.stream().filter(book -> hasAuthor(book, author)).findFirst().orElseThrow(Exception::new);
     }
 
     @PostMapping("/search")
