@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,13 +16,6 @@ import java.util.stream.StreamSupport;
 public class BookService {
 
     private final BookRepository bookRepository;
-
-    private List<Book> books;
-
-    @PostConstruct
-    public void init() {
-        books = getBooksAsStream().collect(Collectors.toList());
-    }
 
     public List<Book> getBooks() {
         return getBooksAsStream().collect(Collectors.toList());
@@ -64,8 +56,6 @@ public class BookService {
     }
 
     private Stream<Book> getBooksAsStream() {
-        return books != null && !books.isEmpty()
-                ? books.stream()
-                : StreamSupport.stream(bookRepository.findAll().spliterator(), false);
+        return StreamSupport.stream(bookRepository.findAll().spliterator(), false);
     }
 }
