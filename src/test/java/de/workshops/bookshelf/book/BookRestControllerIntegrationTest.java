@@ -13,6 +13,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.security.web.FilterChainProxy;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -74,7 +75,7 @@ class BookRestControllerIntegrationTest {
                 given().
                 log().all().
                 when().
-                get("/book").
+                get(BookRestController.REQUEST_URL).
                 then().
                 log().all().
                 statusCode(200).
@@ -88,7 +89,7 @@ class BookRestControllerIntegrationTest {
                 auth().basic("dbUser", "workshops").
                 log().all().
                 when().
-                get("/book").
+                get(BookRestController.REQUEST_URL).
                 then().
                 log().all().
                 statusCode(200).
@@ -117,7 +118,7 @@ class BookRestControllerIntegrationTest {
                 contentType(ContentType.JSON).
                 accept(ContentType.JSON).
                 when().
-                put("/book").
+                put(BookRestController.REQUEST_URL).
                 then().
                 log().all().
                 statusCode(200).
