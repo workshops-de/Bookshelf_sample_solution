@@ -4,11 +4,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 @Service
 @RequiredArgsConstructor
@@ -18,19 +17,22 @@ public class BookService {
     private final BookRepository bookRepository;
 
     public List<Book> getBooks() {
-        return getBooksAsStream().collect(Collectors.toList());
+        List<Book> books = new ArrayList<>();
+        bookRepository.findAll().forEach(books::add);
+
+        return books;
     }
 
     public Book getSingleBook(String isbn) throws BookException {
-        return getBooksAsStream().filter(book -> hasIsbn(book, isbn)).findFirst().orElseThrow(BookException::new);
+        return getBooks().stream().filter(book -> hasIsbn(book, isbn)).findFirst().orElseThrow(BookException::new);
     }
 
     public Book searchBookByAuthor(String author) throws BookException {
-        return getBooksAsStream().filter(book -> hasAuthor(book, author)).findFirst().orElseThrow(BookException::new);
+        return getBooks().stream().filter(book -> hasAuthor(book, author)).findFirst().orElseThrow(BookException::new);
     }
 
     public List<Book> searchBooks(BookSearchRequest request) {
-        return getBooksAsStream()
+        return getBooks().stream()
                 .filter(book -> hasAuthor(book, request.getAuthor()))
                 .filter(book -> hasIsbn(book, request.getIsbn()))
                 .collect(
@@ -53,9 +55,5 @@ public class BookService {
 
     private boolean hasAuthor(Book book, String author) {
         return book.getAuthor().contains(author);
-    }
-
-    private Stream<Book> getBooksAsStream() {
-        return StreamSupport.stream(bookRepository.findAll().spliterator(), false);
     }
 }
