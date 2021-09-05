@@ -49,7 +49,7 @@ public class BookService {
     }
 
     public Book createBook(Book book) {
-        books.add(book);
+        bookRepository.save(book);
 
         return book;
     }
