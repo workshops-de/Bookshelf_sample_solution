@@ -4,10 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -29,6 +31,14 @@ class BookRestControllerIntegrationTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @LocalServerPort
+    private int port;
+
+    @BeforeEach
+    void setUp() {
+        RestAssured.port = port;
+    }
 
     @Test
     void getAllBooks() throws Exception {
@@ -52,7 +62,7 @@ class BookRestControllerIntegrationTest {
                 given().
                 log().all().
                 when().
-                get("/book").
+                get(BookRestController.REQUEST_URL).
                 then().
                 log().all().
                 statusCode(200).
@@ -65,7 +75,7 @@ class BookRestControllerIntegrationTest {
                 given().
                 log().all().
                 when().
-                get("/book").
+                get(BookRestController.REQUEST_URL).
                 then().
                 log().all().
                 statusCode(200).
@@ -89,7 +99,7 @@ class BookRestControllerIntegrationTest {
                 contentType(ContentType.JSON).
                 accept(ContentType.JSON).
                 when().
-                put("/book").
+                put(BookRestController.REQUEST_URL).
                 then().
                 log().all().
                 statusCode(200).
