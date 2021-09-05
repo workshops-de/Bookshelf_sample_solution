@@ -29,14 +29,18 @@ public class BookService {
     }
 
     public Book getSingleBook(String isbn) throws BookException {
+        // TODO: orElseThrow(): "Usage of API documented as @since 10+". With Java 11 we can call the method with an argument.
         return this.books.stream().filter(book -> hasIsbn(book, isbn)).findFirst().orElseThrow(BookException::new);
     }
 
     public Book searchBookByAuthor(String author) throws BookException {
+        // TODO: orElseThrow(): "Usage of API documented as @since 10+". With Java 11 we can call the method with an argument.
         return this.books.stream().filter(book -> hasAuthor(book, author)).findFirst().orElseThrow(BookException::new);
     }
 
     public List<Book> searchBooks(BookSearchRequest request) {
+        // Java 8 doesn't provide a "toUnmodifiableList" method.
+        // TODO: Starting with Java 10 we could simply use ".collect(Collectors.toUnmodifiableList())" here.
         return this.books.stream()
                 .filter(book -> hasAuthor(book, request.getAuthor()))
                 .filter(book -> hasIsbn(book, request.getIsbn()))
