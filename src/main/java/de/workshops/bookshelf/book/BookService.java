@@ -5,10 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 @Service
 @RequiredArgsConstructor
@@ -17,27 +18,27 @@ public class BookService {
 
     private final BookRepository bookRepository;
 
-    private final List<Book> books = new ArrayList<>();
+    private List<Book> books;
 
     @PostConstruct
     public void init() {
-        bookRepository.findAll().forEach(books::add);
+        books = getBooksAsStream().collect(Collectors.toList());
     }
 
     public List<Book> getBooks() {
-        return books;
+        return getBooksAsStream().collect(Collectors.toList());
     }
 
     public Book getSingleBook(String isbn) throws BookException {
-        return books.stream().filter(book -> hasIsbn(book, isbn)).findFirst().orElseThrow(BookException::new);
+        return getBooksAsStream().filter(book -> hasIsbn(book, isbn)).findFirst().orElseThrow(BookException::new);
     }
 
     public Book searchBookByAuthor(String author) throws BookException {
-        return books.stream().filter(book -> hasAuthor(book, author)).findFirst().orElseThrow(BookException::new);
+        return getBooksAsStream().filter(book -> hasAuthor(book, author)).findFirst().orElseThrow(BookException::new);
     }
 
     public List<Book> searchBooks(BookSearchRequest request) {
-        return books.stream()
+        return getBooksAsStream()
                 .filter(book -> hasAuthor(book, request.getAuthor()))
                 .filter(book -> hasIsbn(book, request.getIsbn()))
                 .collect(
@@ -60,5 +61,11 @@ public class BookService {
 
     private boolean hasAuthor(Book book, String author) {
         return book.getAuthor().contains(author);
+    }
+
+    private Stream<Book> getBooksAsStream() {
+        return books != null && !books.isEmpty()
+                ? books.stream()
+                : StreamSupport.stream(bookRepository.findAll().spliterator(), false);
     }
 }
