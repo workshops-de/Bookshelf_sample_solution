@@ -32,14 +32,6 @@ class BookRepositoryTest {
         assertNotNull(books);
         assertEquals(4, books.size());
         assertEquals(book.getTitle(), books.get(3).getTitle());
-
-        bookRepository.delete(book);
-
-        books = StreamSupport
-                .stream(bookRepository.findAll().spliterator(), false)
-                .collect(Collectors.toList());
-
-        assertEquals(3, books.size());
     }
 
     @Test
