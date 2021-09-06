@@ -63,6 +63,7 @@ class BookRestControllerIntegrationTest {
         String jsonPayload = mvcResult.getResponse().getContentAsString();
 
         Book[] books = objectMapper.readValue(jsonPayload, Book[].class);
+        assertEquals(3, books.length);
         assertEquals("Clean Code", books[1].getTitle());
     }
 
