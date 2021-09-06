@@ -31,4 +31,13 @@ public class BookRepository {
                 book.getIsbn()
         );
     }
+
+    public void deleteBook(Book book) {
+        String sql = "DELETE FROM book WHERE isbn = ?";
+
+        jdbcTemplate.update(
+                sql,
+                book.getIsbn()
+        );
+    }
 }

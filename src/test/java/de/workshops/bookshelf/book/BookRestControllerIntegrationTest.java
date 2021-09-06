@@ -32,6 +32,9 @@ class BookRestControllerIntegrationTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private BookRepository bookRepository;
+
     @LocalServerPort
     private int port;
 
@@ -104,5 +107,8 @@ class BookRestControllerIntegrationTest {
                 log().all().
                 statusCode(200).
                 body("author", equalTo("Eric Evans"));
+
+        // Restore previous state
+        bookRepository.deleteBook(book);
     }
 }
