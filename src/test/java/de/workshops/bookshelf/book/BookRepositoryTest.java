@@ -23,7 +23,7 @@ class BookRepositoryTest {
     void createBook() {
         String isbn = "123-4567890";
         Book book = buildBook(isbn);
-        bookRepository.save(book);
+        book = bookRepository.save(book);
 
         List<Book> books = StreamSupport
                 .stream(bookRepository.findAll().spliterator(), false)
@@ -32,6 +32,14 @@ class BookRepositoryTest {
         assertNotNull(books);
         assertEquals(4, books.size());
         assertEquals(book.getTitle(), books.get(3).getTitle());
+
+        bookRepository.delete(book);
+
+        books = StreamSupport
+                .stream(bookRepository.findAll().spliterator(), false)
+                .collect(Collectors.toList());
+
+        assertEquals(3, books.size());
     }
 
     @Test
