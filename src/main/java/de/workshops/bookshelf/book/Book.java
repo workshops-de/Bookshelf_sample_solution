@@ -1,18 +1,16 @@
 package de.workshops.bookshelf.book;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
-public class Book {
+class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
