@@ -35,12 +35,7 @@ public class BookService {
         return getBooks().stream()
                 .filter(book -> hasAuthor(book, request.getAuthor()))
                 .filter(book -> hasIsbn(book, request.getIsbn()))
-                .collect(
-                        Collectors.collectingAndThen(
-                                Collectors.toList(),
-                                Collections::unmodifiableList
-                        )
-                );
+                .collect(Collectors.toUnmodifiableList());
     }
 
     public Book createBook(Book book) {
