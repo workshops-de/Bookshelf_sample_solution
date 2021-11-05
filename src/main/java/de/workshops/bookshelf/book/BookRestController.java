@@ -32,12 +32,12 @@ public class BookRestController {
 
     @GetMapping("/{isbn}")
     public Book getSingleBook(@PathVariable String isbn) throws Exception {
-        return this.books.stream().filter(book -> hasIsbn(book, isbn)).findFirst().orElseThrow(Exception::new);
+        return this.books.stream().filter(book -> hasIsbn(book, isbn)).findFirst().orElseThrow();
     }
 
     @GetMapping(params = "author")
     public Book searchBookByAuthor(@RequestParam String author) throws Exception {
-        return this.books.stream().filter(book -> hasAuthor(book, author)).findFirst().orElseThrow(Exception::new);
+        return this.books.stream().filter(book -> hasAuthor(book, author)).findFirst().orElseThrow();
     }
 
     @PostMapping("/search")
@@ -45,12 +45,7 @@ public class BookRestController {
         return this.books.stream()
                 .filter(book -> hasAuthor(book, request.getAuthor()))
                 .filter(book -> hasIsbn(book, request.getIsbn()))
-                .collect(
-                        Collectors.collectingAndThen(
-                                Collectors.toList(),
-                                Collections::unmodifiableList
-                        )
-                );
+                .collect(Collectors.toUnmodifiableList());
     }
 
     private boolean hasIsbn(Book book, String isbn) {
