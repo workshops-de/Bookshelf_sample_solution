@@ -1,7 +1,6 @@
 application:
   title: Bookshelf
   version: 0.0.1
-
 ---
 spring:
   config:
@@ -10,3 +9,6 @@ spring:
         - prod
 server:
   port: 8090
+springdoc:
+  api-docs:
+    enabled: false
