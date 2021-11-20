@@ -3,4 +3,3 @@ server:
 springdoc:
   api-docs:
     enabled: false
-
