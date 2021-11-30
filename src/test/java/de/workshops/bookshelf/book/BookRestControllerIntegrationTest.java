@@ -1,9 +1,11 @@
 package de.workshops.bookshelf.book;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import io.restassured.module.mockmvc.response.MockMvcResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.io.UnsupportedEncodingException;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -59,6 +63,7 @@ class BookRestControllerIntegrationTest {
         String jsonPayload = mvcResult.getResponse().getContentAsString();
 
         Book[] books = objectMapper.readValue(jsonPayload, Book[].class);
+        assertEquals(3, books.length);
         assertEquals("Clean Code", books[1].getTitle());
     }
 
@@ -74,7 +79,7 @@ class BookRestControllerIntegrationTest {
                 given().
                 log().all().
                 when().
-                get("/book").
+                get(BookRestController.REQUEST_URL).
                 then().
                 log().all().
                 statusCode(200).
@@ -88,7 +93,7 @@ class BookRestControllerIntegrationTest {
                 auth().basic("dbUser", "workshops").
                 log().all().
                 when().
-                get("/book").
+                get(BookRestController.REQUEST_URL).
                 then().
                 log().all().
                 statusCode(200).
@@ -97,7 +102,7 @@ class BookRestControllerIntegrationTest {
 
     @Test
     @WithMockUser
-    void createBook() {
+    void createBook() throws UnsupportedEncodingException, JsonProcessingException {
         RestAssuredMockMvc.standaloneSetup(
                 MockMvcBuilders
                         .standaloneSetup(bookRestController)
@@ -110,17 +115,32 @@ class BookRestControllerIntegrationTest {
         book.setIsbn("978-0321125217");
         book.setDescription("This is not a book about specific technologies. It offers readers a systematic approach to domain-driven design, presenting an extensive set of design best practices, experience-based techniques, and fundamental principles that facilitate the development of software projects facing complex domains.");
 
-        RestAssuredMockMvc.
+        MockMvcResponse mockMvcResponse = RestAssuredMockMvc.
                 given().
                 log().all().
                 body(book).
                 contentType(ContentType.JSON).
                 accept(ContentType.JSON).
                 when().
-                put("/book").
+                put(BookRestController.REQUEST_URL).
+                andReturn();
+        mockMvcResponse.
                 then().
                 log().all().
                 statusCode(200).
                 body("author", equalTo("Eric Evans"));
+
+        String jsonPayload = mockMvcResponse.mvcResult().getResponse().getContentAsString();
+        String isbn = objectMapper.readValue(jsonPayload, Book.class).getIsbn();
+        RestAssuredMockMvc.
+                given().
+                log().all().
+                contentType(ContentType.JSON).
+                accept(ContentType.JSON).
+                when().
+                delete(BookRestController.REQUEST_URL + "/" + isbn).
+                then().
+                log().all().
+                statusCode(200);
     }
 }

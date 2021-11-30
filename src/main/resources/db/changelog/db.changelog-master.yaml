@@ -1,0 +1,115 @@
+databaseChangeLog:
+  - changeSet:
+      id: createTableBooks
+      author: workshops
+      changes:
+        - createTable:
+            tableName: book
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: title
+                  type: varchar
+              - column:
+                  name: author
+                  type: varchar
+              - column:
+                  name: isbn
+                  type: varchar
+              - column:
+                  name: description
+                  type: varchar
+      rollback:
+        - dropTable:
+            tableName: book
+
+  - changeSet:
+      id: createTableUsers
+      author: workshops
+      changes:
+        - createTable:
+            tableName: user
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: username
+                  type: varchar
+                  constraints:
+                    unique: true
+              - column:
+                  name: password
+                  type: varchar
+              - column:
+                  name: firstname
+                  type: varchar
+              - column:
+                  name: lastname
+                  type: varchar
+              - column:
+                  name: role
+                  type: varchar
+              - column:
+                  name: lastlogin
+                  type: datetime
+      rollback:
+        - dropTable:
+            tableName: user
+
+  - changeSet:
+      id: createDefaultAdmin
+      author: workshops
+      changes:
+        - sql:
+            sql: >
+              INSERT INTO user (username, password, firstname, lastname, role)
+              VALUES ('dbUser', 'password', 'Default', 'Default', 'ADMIN');
+      rollback:
+        - sql:
+            sql: DELETE FROM user;
+
+  # This is for demonstration purposes only.
+  # Checking credentials of any kind into source control should be avoided.
+  - changeSet:
+      id: updateDefaultAdmin
+      author: workshops
+      changes:
+        - sql:
+            sql: >
+              UPDATE user SET password = '$2a$10$vAiSOk2MzsgZ8EvDNSEkWuZ47.bSwEHTgnl4mN.Zgz4TrxZQ4S6Ee'
+              WHERE username = 'dbUser';
+      rollback:
+        - sql:
+            sql: >
+              UPDATE user SET password = 'password'
+              WHERE username = 'dbUser';
+
+  - changeSet:
+      id: addDefaultBooks
+      author: workshops
+      changes:
+        - sql:
+            sql: >
+              INSERT INTO book (isbn, title, author, description)
+              VALUES ('978-0201633610', 'Design Patterns', 'Erich Gamma',
+              'Mit Design Patterns lassen sich wiederkehrende Aufgaben in der objektorientierten Softwareentwicklung effektiv lösen.');
+
+              INSERT INTO book (isbn, title, author, description)
+              VALUES ('978-3826655487', 'Clean Code', 'Robert C. Martin',
+              'Das einzige praxisnahe Buch, mit dem Sie lernen, guten Code zu schreiben!');
+
+              INSERT INTO book (isbn, title, author, description)
+              VALUES ('978-3836211161', 'Coding for Fun', 'Gottfried Wolmeringer',
+              'Dieses unterhaltsam geschriebene Buch führt Sie spielerisch durch die spektakuläre Geschichte unserer Blechkollegen.');
+      rollback:
+        - sql:
+            sql: DELETE FROM book;

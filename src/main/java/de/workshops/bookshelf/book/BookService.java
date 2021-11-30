@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,40 +11,40 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class BookService {
+class BookService {
 
     private final BookRepository bookRepository;
 
-    private final List<Book> books = new ArrayList<>();
-
-    @PostConstruct
-    public void init() {
+    List<Book> getBooks() {
+        List<Book> books = new ArrayList<>();
         bookRepository.findAll().forEach(books::add);
-    }
 
-    public List<Book> getBooks() {
         return books;
     }
 
-    public Book getSingleBook(String isbn) throws BookException {
-        return books.stream().filter(book -> hasIsbn(book, isbn)).findFirst().orElseThrow(BookException::new);
+    Book getSingleBook(String isbn) throws BookException {
+        return getBooks().stream().filter(book -> hasIsbn(book, isbn)).findFirst().orElseThrow(BookException::new);
     }
 
-    public Book searchBookByAuthor(String author) throws BookException {
-        return books.stream().filter(book -> hasAuthor(book, author)).findFirst().orElseThrow(BookException::new);
+    Book searchBookByAuthor(String author) throws BookException {
+        return getBooks().stream().filter(book -> hasAuthor(book, author)).findFirst().orElseThrow(BookException::new);
     }
 
-    public List<Book> searchBooks(BookSearchRequest request) {
-        return books.stream()
+    List<Book> searchBooks(BookSearchRequest request) {
+        return getBooks().stream()
                 .filter(book -> hasAuthor(book, request.getAuthor()))
                 .filter(book -> hasIsbn(book, request.getIsbn()))
                 .collect(Collectors.toUnmodifiableList());
     }
 
-    public Book createBook(Book book) {
-        books.add(book);
+    Book createBook(Book book) {
+        bookRepository.save(book);
 
         return book;
+    }
+
+    void deleteBook(Book book) {
+        bookRepository.delete(book);
     }
 
     private boolean hasIsbn(Book book, String isbn) {

@@ -47,6 +47,13 @@ public class BookRestController {
         return bookService.createBook(book);
     }
 
+    @DeleteMapping("/{isbn}")
+    public ResponseEntity<String> deleteBook(@PathVariable String isbn) throws BookException {
+        bookService.deleteBook(bookService.getSingleBook(isbn));
+
+        return new ResponseEntity<>("OK", HttpStatus.OK);
+    }
+
     @ExceptionHandler(BookException.class)
     public ResponseEntity<String> error(BookException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
