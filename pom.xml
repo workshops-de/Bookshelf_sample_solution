@@ -15,7 +15,7 @@
 	<description>Sample project for Spring Boot Workshop</description>
 	<properties>
 		<java.version>11</java.version>
-		<springdoc.version>1.5.12</springdoc.version>
+		<springdoc.version>1.6.2</springdoc.version>
 	</properties>
 	<dependencies>
 		<dependency>
