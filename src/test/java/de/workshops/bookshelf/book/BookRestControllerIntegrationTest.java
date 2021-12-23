@@ -89,7 +89,7 @@ class BookRestControllerIntegrationTest {
                 contentType(ContentType.JSON).
                 accept(ContentType.JSON).
                 when().
-                put("/book").
+                post("/book").
                 then().
                 log().all().
                 statusCode(200).

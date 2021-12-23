@@ -41,7 +41,7 @@ public class BookRestController {
         return bookService.searchBooks(request);
     }
 
-    @PutMapping
+    @PostMapping
     public Book createBook(@RequestBody Book book) {
         return bookService.createBook(book);
     }
