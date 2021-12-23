@@ -3,7 +3,6 @@ application:
   version: 0.0.1
 server:
   port: 8080
-
 ---
 spring:
   config:
@@ -13,3 +12,6 @@ spring:
         - test-prod
 server:
   port: 8090
+springdoc:
+  api-docs:
+    enabled: false
