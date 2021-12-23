@@ -125,7 +125,7 @@ class BookRestControllerIntegrationTest {
                 contentType(ContentType.JSON).
                 accept(ContentType.JSON).
                 when().
-                put(BookRestController.REQUEST_URL).
+                post(BookRestController.REQUEST_URL).
                 andReturn();
         mockMvcResponse.
                 then().
