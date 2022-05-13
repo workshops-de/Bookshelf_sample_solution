@@ -32,18 +32,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().antMatchers("/").permitAll().and()
                 .authorizeRequests().antMatchers("/actuator/**").permitAll().and()
                 .authorizeRequests().anyRequest().authenticated().and()
-                    .formLogin()
-                        .successHandler(
-                                (request, response, authentication) -> {
-                                    UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-                                    jdbcTemplate.update(
-                                            "UPDATE bookshelf_user SET lastlogin = NOW() WHERE username = ?",
-                                            userDetails.getUsername()
-                                    );
-                                    response.sendRedirect("/success");
-                                }
-                        )
-                    .and()
+                .formLogin()
+                .successHandler(
+                        (request, response, authentication) -> {
+                            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+                            jdbcTemplate.update(
+                                    "UPDATE bookshelf_user SET lastlogin = NOW() WHERE username = ?",
+                                    userDetails.getUsername()
+                            );
+                            response.sendRedirect("/success");
+                        }
+                )
+                .and()
                 .httpBasic();
     }
 
