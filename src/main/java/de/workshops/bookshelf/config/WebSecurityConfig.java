@@ -31,12 +31,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().antMatchers("/").permitAll().and()
                 .authorizeRequests().anyRequest().authenticated().and()
                     .formLogin()
-                        .successForwardUrl("/success")
                         .successHandler(
                                 (request, response, authentication) -> {
                                     UserDetails userDetails = (UserDetails) authentication.getPrincipal();
                                     jdbcTemplate.update(
-                                            "UPDATE user SET lastlogin = NOW() WHERE username = ?",
+                                            "UPDATE bookshelf_user SET lastlogin = NOW() WHERE username = ?",
                                             userDetails.getUsername()
                                     );
                                     response.sendRedirect("/success");
