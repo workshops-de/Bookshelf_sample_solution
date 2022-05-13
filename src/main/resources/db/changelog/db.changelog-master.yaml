@@ -33,7 +33,7 @@ databaseChangeLog:
       author: workshops
       changes:
         - createTable:
-            tableName: user
+            tableName: bookshelf_user
             columns:
               - column:
                   name: id
@@ -63,7 +63,7 @@ databaseChangeLog:
                   type: datetime
       rollback:
         - dropTable:
-            tableName: user
+            tableName: bookshelf_user
 
   - changeSet:
       id: createDefaultAdmin
@@ -71,8 +71,8 @@ databaseChangeLog:
       changes:
         - sql:
             sql: >
-              INSERT INTO user (username, password, firstname, lastname, role)
+              INSERT INTO bookshelf_user (username, password, firstname, lastname, role)
               VALUES ('dbUser', 'password', 'Default', 'Default', 'ADMIN');
       rollback:
         - sql:
-            sql: DELETE FROM user;
+            sql: DELETE FROM bookshelf_user;
