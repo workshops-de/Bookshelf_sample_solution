@@ -33,12 +33,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().antMatchers("/actuator/**").permitAll().and()
                 .authorizeRequests().anyRequest().authenticated().and()
                     .formLogin()
-                        .successForwardUrl("/success")
                         .successHandler(
                                 (request, response, authentication) -> {
                                     UserDetails userDetails = (UserDetails) authentication.getPrincipal();
                                     jdbcTemplate.update(
-                                            "UPDATE user SET lastlogin = NOW() WHERE username = ?",
+                                            "UPDATE bookshelf_user SET lastlogin = NOW() WHERE username = ?",
                                             userDetails.getUsername()
                                     );
                                     response.sendRedirect("/success");
@@ -71,7 +70,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public UserDetailsService userDetailsService() {
         return username -> {
-            String sql = "SELECT * FROM user WHERE username = ?";
+            String sql = "SELECT * FROM bookshelf_user WHERE username = ?";
 
             return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new User(
                     rs.getString("username"),
