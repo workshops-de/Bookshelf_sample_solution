@@ -1,8 +1,6 @@
 package de.workshops.bookshelf.book;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import java.io.UnsupportedEncodingException;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -24,9 +22,12 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.io.UnsupportedEncodingException;
+
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
@@ -111,6 +112,7 @@ class BookRestControllerIntegrationTest {
                         .standaloneSetup(bookRestController)
                         .apply(SecurityMockMvcConfigurers.springSecurity(springSecurityFilterChain))
         );
+        RestAssuredMockMvc.postProcessors(csrf().asHeader());
 
         Book book = new Book();
         book.setAuthor("Eric Evans");
