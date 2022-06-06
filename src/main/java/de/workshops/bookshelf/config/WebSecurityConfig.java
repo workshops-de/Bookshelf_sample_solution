@@ -4,36 +4,32 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 
 import java.util.Collections;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @Configuration
-@EnableWebSecurity
 @RequiredArgsConstructor
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig {
 
     private final JdbcTemplate jdbcTemplate;
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
-                .authorizeRequests().antMatchers("/").permitAll().and()
-                .authorizeRequests().antMatchers("/actuator/**").permitAll().and()
-                .authorizeRequests().anyRequest().authenticated().and()
-                .formLogin()
-                .successHandler(
+    @Bean
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        return http.authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+                .httpBasic(withDefaults())
+                .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.successHandler(
                         (request, response, authentication) -> {
                             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
                             jdbcTemplate.update(
@@ -42,32 +38,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                             );
                             response.sendRedirect("/success");
                         }
-                )
-                .and()
-                .httpBasic();
-    }
-
-    @Override
-    public void configure(WebSecurity web) {
-        web
-                .ignoring()
-                .antMatchers("/h2-console/**");
-    }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .userDetailsService(userDetailsService())
-                .passwordEncoder(passwordEncoder());
+                ))
+                .csrf(AbstractHttpConfigurer::disable)
+                .build();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    WebSecurityCustomizer webSecurityCustomizer() {
+        return web -> web.ignoring().antMatchers("/h2-console/**");
     }
 
     @Bean
-    @Override
     public UserDetailsService userDetailsService() {
         return username -> {
             String sql = "SELECT * FROM bookshelf_user WHERE username = ?";
@@ -80,5 +61,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     )
             ), username);
         };
+    }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }
