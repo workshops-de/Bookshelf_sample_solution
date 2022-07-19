@@ -50,6 +50,7 @@ public class WebSecurityConfig {
             ), username);
         };
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return NoOpPasswordEncoder.getInstance();
