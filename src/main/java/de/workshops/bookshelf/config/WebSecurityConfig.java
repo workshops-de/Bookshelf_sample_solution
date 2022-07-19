@@ -25,44 +25,6 @@ public class WebSecurityConfig {
 
     private final JdbcTemplate jdbcTemplate;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
-                .authorizeRequests().antMatchers("/").permitAll().and()
-                .authorizeRequests().anyRequest().authenticated().and()
-                    .formLogin()
-                        .successHandler(
-                                (request, response, authentication) -> {
-                                    UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-                                    jdbcTemplate.update(
-                                            "UPDATE bookshelf_user SET lastlogin = NOW() WHERE username = ?",
-                                            userDetails.getUsername()
-                                    );
-                                    response.sendRedirect("/success");
-                                }
-                        )
-                    .and()
-                .httpBasic();
-    }
-
-    @Override
-    public void configure(WebSecurity web) {
-        web
-                .ignoring()
-                .antMatchers("/h2-console/**");
-    }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .userDetailsService(userDetailsService())
-                .passwordEncoder(passwordEncoder());
-=======
-=======
->>>>>>> 271cb99cd8316dd052622651c238d0ca3933d110
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
@@ -79,10 +41,6 @@ public class WebSecurityConfig {
                 ))
                 .csrf(AbstractHttpConfigurer::disable)
                 .build();
-<<<<<<< HEAD
->>>>>>> Customize_form_login
-=======
->>>>>>> 271cb99cd8316dd052622651c238d0ca3933d110
     }
 
     @Bean
