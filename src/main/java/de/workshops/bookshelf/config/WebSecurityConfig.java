@@ -4,27 +4,27 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 
 import java.util.Collections;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @Configuration
-@EnableWebSecurity
 @RequiredArgsConstructor
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig {
 
     private final JdbcTemplate jdbcTemplate;
 
+<<<<<<< HEAD
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -58,15 +58,31 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth
                 .userDetailsService(userDetailsService())
                 .passwordEncoder(passwordEncoder());
+=======
+    @Bean
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        return http.authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+                .httpBasic(withDefaults())
+                .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.successHandler(
+                        (request, response, authentication) -> {
+                            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+                            jdbcTemplate.update(
+                                    "UPDATE bookshelf_user SET lastlogin = NOW() WHERE username = ?",
+                                    userDetails.getUsername()
+                            );
+                            response.sendRedirect("/success");
+                        }
+                ))
+                .build();
+>>>>>>> Customize_form_login
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    WebSecurityCustomizer webSecurityCustomizer() {
+        return web -> web.ignoring().antMatchers("/h2-console/**");
     }
 
     @Bean
-    @Override
     public UserDetailsService userDetailsService() {
         return username -> {
             String sql = "SELECT * FROM bookshelf_user WHERE username = ?";
@@ -79,5 +95,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     )
             ), username);
         };
+    }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }
