@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,6 +25,7 @@ public class WebSecurityConfig {
 
     private final JdbcTemplate jdbcTemplate;
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -59,6 +61,8 @@ public class WebSecurityConfig {
                 .userDetailsService(userDetailsService())
                 .passwordEncoder(passwordEncoder());
 =======
+=======
+>>>>>>> 271cb99cd8316dd052622651c238d0ca3933d110
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
@@ -73,8 +77,12 @@ public class WebSecurityConfig {
                             response.sendRedirect("/success");
                         }
                 ))
+                .csrf(AbstractHttpConfigurer::disable)
                 .build();
+<<<<<<< HEAD
 >>>>>>> Customize_form_login
+=======
+>>>>>>> 271cb99cd8316dd052622651c238d0ca3933d110
     }
 
     @Bean
