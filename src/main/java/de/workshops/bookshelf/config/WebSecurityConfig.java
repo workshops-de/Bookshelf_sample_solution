@@ -24,7 +24,8 @@ public class WebSecurityConfig {
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.authorizeHttpRequests(
+        return http
+                .authorizeHttpRequests(
                         authorize ->
                                 authorize
                                         .antMatchers("/h2-console/**").permitAll()
