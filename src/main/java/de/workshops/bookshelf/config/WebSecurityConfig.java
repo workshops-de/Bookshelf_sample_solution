@@ -5,8 +5,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+<<<<<<< HEAD
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+=======
+>>>>>>> Add_more_credentials
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
@@ -38,6 +41,7 @@ public class WebSecurityConfig {
     }
 
     @Bean
+<<<<<<< HEAD
     WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web.ignoring().antMatchers("/h2-console/**");
     }
@@ -55,6 +59,12 @@ public class WebSecurityConfig {
                     )
             ), username);
         };
+=======
+    UserDetailsService userDetailsService() {
+        var user = User.builder().username("user").password("password").roles("USER").build();
+        var admin = User.builder().username("admin").password("admin").roles("USER", "ADMIN").build();
+        return new InMemoryUserDetailsManager(user, admin);
+>>>>>>> Add_more_credentials
     }
 
     @Bean
