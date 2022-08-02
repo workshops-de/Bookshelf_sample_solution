@@ -26,7 +26,12 @@ public class WebSecurityConfig {
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+        return http.authorizeHttpRequests(
+                authorize ->
+                        authorize
+                                .antMatchers("/h2-console/**").permitAll()
+                                .anyRequest().authenticated()
+                )
                 .httpBasic(withDefaults())
                 .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.successHandler(
                         (request, response, authentication) -> {
@@ -38,6 +43,7 @@ public class WebSecurityConfig {
                             response.sendRedirect("/success");
                         }
                 ))
+                .headers().frameOptions().disable().and()
                 .build();
     }
 
