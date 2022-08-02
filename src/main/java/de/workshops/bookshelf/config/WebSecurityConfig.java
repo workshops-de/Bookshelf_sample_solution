@@ -28,11 +28,12 @@ public class WebSecurityConfig {
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.authorizeHttpRequests(
-                authorize ->
-                        authorize
-                                .antMatchers("/h2-console/**").permitAll()
-                                .anyRequest().authenticated()
+        return http
+                .authorizeHttpRequests(
+                        authorize ->
+                                authorize
+                                        .antMatchers("/h2-console/**").permitAll()
+                                        .anyRequest().authenticated()
                 )
                 .httpBasic(withDefaults())
                 .formLogin(withDefaults())
