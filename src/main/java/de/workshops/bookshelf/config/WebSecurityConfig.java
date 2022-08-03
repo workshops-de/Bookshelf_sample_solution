@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,7 +26,13 @@ public class WebSecurityConfig {
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+        return http
+                .authorizeHttpRequests(
+                        authorize ->
+                                authorize
+                                        .antMatchers("/h2-console/**").permitAll()
+                                        .anyRequest().authenticated()
+                )
                 .httpBasic(withDefaults())
                 .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.successHandler(
                         (request, response, authentication) -> {
@@ -38,12 +44,9 @@ public class WebSecurityConfig {
                             response.sendRedirect("/success");
                         }
                 ))
+                .csrf(AbstractHttpConfigurer::disable)
+                .headers().frameOptions().disable().and()
                 .build();
-    }
-
-    @Bean
-    WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.ignoring().antMatchers("/h2-console/**");
     }
 
     @Bean
