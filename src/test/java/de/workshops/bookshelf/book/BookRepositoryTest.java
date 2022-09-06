@@ -26,7 +26,6 @@ class BookRepositoryTest {
     @Test
     void createBook() {
         Book book = Book.builder()
-                .id(42L)
                 .title("Title")
                 .author("Author")
                 .description("Description")
@@ -38,6 +37,6 @@ class BookRepositoryTest {
 
         assertNotNull(books);
         assertEquals(4, books.size());
-        assertEquals(book, books.get(3));
+        assertEquals(book.getIsbn(), books.get(3).getIsbn());
     }
 }

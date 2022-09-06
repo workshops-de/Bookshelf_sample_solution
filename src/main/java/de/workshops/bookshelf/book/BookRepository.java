@@ -20,11 +20,10 @@ public class BookRepository {
     }
 
     public void createBook(Book book) {
-        String sql = "INSERT INTO book (id, title, description, author, isbn) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO book (title, description, author, isbn) VALUES (?, ?, ?, ?)";
 
         jdbcTemplate.update(
                 sql,
-                book.getId(),
                 book.getTitle(),
                 book.getDescription(),
                 book.getAuthor(),
