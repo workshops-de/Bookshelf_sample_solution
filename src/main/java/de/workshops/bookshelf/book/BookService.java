@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.StreamSupport;
 
 @Service
 @RequiredArgsConstructor
@@ -15,10 +15,8 @@ class BookService {
     private final BookRepository bookRepository;
 
     List<Book> getBooks() {
-        List<Book> books = new ArrayList<>();
-        bookRepository.findAll().forEach(books::add);
-
-        return books;
+        return StreamSupport.stream(bookRepository.findAll().spliterator(), false)
+            .toList();
     }
 
     Book getSingleBook(String isbn) throws BookException {
