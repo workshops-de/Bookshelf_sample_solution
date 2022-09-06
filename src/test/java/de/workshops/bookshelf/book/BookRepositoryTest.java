@@ -22,8 +22,12 @@ class BookRepositoryTest {
     @Test
     void createBook() {
         String isbn = "123-4567890";
+<<<<<<< HEAD
         Book book = buildBook(isbn);
         book = bookRepository.save(book);
+=======
+        Book book = buildAndSaveBook(isbn);
+>>>>>>> Enable_Spring_Boot_Actuator
 
         List<Book> books = StreamSupport
                 .stream(bookRepository.findAll().spliterator(), false)
@@ -37,8 +41,7 @@ class BookRepositoryTest {
     @Test
     void findBookByIsbn() {
         String isbn = "123-4567890";
-        Book book = buildBook(isbn);
-        bookRepository.save(book);
+        Book book = buildAndSaveBook(isbn);
 
         Book newBook = bookRepository.findByIsbn(isbn);
 
@@ -46,12 +49,15 @@ class BookRepositoryTest {
         assertEquals(book.getTitle(), newBook.getTitle());
     }
 
-    private Book buildBook(String isbn) {
-        return Book.builder()
+    private Book buildAndSaveBook(String isbn) {
+        Book book = Book.builder()
                 .title("Title")
                 .author("Author")
                 .description("Description")
                 .isbn(isbn)
                 .build();
+        bookRepository.save(book);
+
+        return book;
     }
 }
