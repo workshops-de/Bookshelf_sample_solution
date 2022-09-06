@@ -19,8 +19,18 @@ class BookRepositoryTest {
 
     @Test
     void createBook() {
+<<<<<<< HEAD
         String isbn = "123-4567890";
         Book book = buildAndSaveBook(isbn);
+=======
+        Book book = Book.builder()
+                .title("Title")
+                .author("Author")
+                .description("Description")
+                .isbn("123-4567890")
+                .build();
+        bookRepository.createBook(book);
+>>>>>>> Create_and_test_a_BookRepository_based_on_JDBCTemplate
 
         List<Book> books = StreamSupport
                 .stream(bookRepository.findAll().spliterator(), false)
@@ -28,6 +38,7 @@ class BookRepositoryTest {
 
         assertNotNull(books);
         assertEquals(4, books.size());
+<<<<<<< HEAD
         assertEquals(book.getTitle(), books.get(3).getTitle());
     }
 
@@ -51,5 +62,8 @@ class BookRepositoryTest {
                 .build();
         bookRepository.save(book);
         return book;
+=======
+        assertEquals(book.getIsbn(), books.get(3).getIsbn());
+>>>>>>> Create_and_test_a_BookRepository_based_on_JDBCTemplate
     }
 }
