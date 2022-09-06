@@ -22,16 +22,11 @@ class BookRepositoryTest {
     @Test
     void createBook() {
         String isbn = "123-4567890";
-<<<<<<< HEAD
-        Book book = buildBook(isbn);
-        book = bookRepository.save(book);
-=======
         Book book = buildAndSaveBook(isbn);
->>>>>>> Enable_Spring_Boot_Actuator
 
         List<Book> books = StreamSupport
                 .stream(bookRepository.findAll().spliterator(), false)
-                .collect(Collectors.toUnmodifiableList());
+                .collect(Collectors.toList());
 
         assertNotNull(books);
         assertEquals(4, books.size());
