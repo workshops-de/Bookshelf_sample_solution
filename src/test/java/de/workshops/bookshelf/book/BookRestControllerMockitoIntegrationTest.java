@@ -12,6 +12,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.Collections;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 class BookRestControllerMockitoIntegrationTest {
@@ -25,7 +27,7 @@ class BookRestControllerMockitoIntegrationTest {
     @Test
     @WithMockUser
     void getAllBooks() throws Exception {
-        Mockito.when(bookService.getBooks()).thenReturn(null);
+        Mockito.when(bookService.getBooks()).thenReturn(Collections.emptyList());
 
         mockMvc.perform(MockMvcRequestBuilders.get(BookRestController.REQUEST_URL))
                 .andDo(MockMvcResultHandlers.print())
