@@ -24,8 +24,8 @@ class BookRepositoryTest {
         Book book = buildAndSaveBook(isbn);
 
         List<Book> books = StreamSupport
-            .stream(bookRepository.findAll().spliterator(), false)
-            .toList();
+                .stream(bookRepository.findAll().spliterator(), false)
+                .toList();
 
         assertNotNull(books);
         assertEquals(4, books.size());
