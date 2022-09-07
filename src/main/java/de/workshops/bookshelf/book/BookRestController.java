@@ -19,10 +19,10 @@ public class BookRestController {
     @GetMapping
     public ResponseEntity<List<Book>> getAllBooks() {
         List<Book> result = bookService.getBooks();
-        if (result == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (result.isEmpty()) {
+            return ResponseEntity.notFound().build();
         } else {
-            return new ResponseEntity<>(result, HttpStatus.OK);
+            return ResponseEntity.ok(result);
         }
     }
 
@@ -50,7 +50,7 @@ public class BookRestController {
     public ResponseEntity<String> deleteBook(@PathVariable String isbn) throws BookException {
         bookService.deleteBook(bookService.getSingleBook(isbn));
 
-        return new ResponseEntity<>("OK", HttpStatus.OK);
+        return ResponseEntity.ok("OK");
     }
 
     @ExceptionHandler(BookException.class)
