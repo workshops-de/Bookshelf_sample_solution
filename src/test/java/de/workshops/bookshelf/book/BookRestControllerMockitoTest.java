@@ -5,11 +5,11 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 class BookRestControllerMockitoTest {
@@ -24,7 +24,6 @@ class BookRestControllerMockitoTest {
     void getAllBooks() {
         Mockito.when(bookService.getBooks()).thenReturn(Collections.emptyList());
 
-        assertNotNull(bookRestController.getAllBooks().getBody());
-        assertEquals(0, bookRestController.getAllBooks().getBody().size());
+        assertEquals(HttpStatus.NOT_FOUND, bookRestController.getAllBooks().getStatusCode());
     }
 }
