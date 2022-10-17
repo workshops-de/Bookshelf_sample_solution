@@ -1,5 +1,6 @@
 package de.workshops.bookshelf.book;
 
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,14 @@ class BookRestControllerMockitoIntegrationTest {
     @Test
     @WithMockUser
     void getAllBooks() throws Exception {
+        Mockito.when(bookService.getBooks()).thenReturn(Collections.singletonList(new Book()));
+
+        mockMvc.perform(MockMvcRequestBuilders.get(BookRestController.REQUEST_URL))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
+                .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(1)));
+
         Mockito.when(bookService.getBooks()).thenReturn(Collections.emptyList());
 
         mockMvc.perform(MockMvcRequestBuilders.get(BookRestController.REQUEST_URL))
