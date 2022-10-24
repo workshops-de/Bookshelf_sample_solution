@@ -42,7 +42,7 @@ class BookRestControllerIntegrationTest {
 
     @Test
     void getAllBooks() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(BookRestController.REQUEST_URL))
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/book"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(3)))
