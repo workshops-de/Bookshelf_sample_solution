@@ -8,7 +8,6 @@ import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -46,7 +45,7 @@ public class BookService {
         return this.books.stream()
                 .filter(book -> hasAuthor(book, request.getAuthor()))
                 .filter(book -> hasIsbn(book, request.getIsbn()))
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
     }
 
     private boolean hasIsbn(Book book, String isbn) {
