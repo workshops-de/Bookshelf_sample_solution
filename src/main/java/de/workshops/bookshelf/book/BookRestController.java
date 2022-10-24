@@ -7,9 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/book")
@@ -31,12 +29,12 @@ public class BookRestController {
     }
 
     @GetMapping("/{isbn}")
-    public Book getSingleBook(@PathVariable String isbn) throws Exception {
+    public Book getSingleBook(@PathVariable String isbn) {
         return this.books.stream().filter(book -> hasIsbn(book, isbn)).findFirst().orElseThrow();
     }
 
     @GetMapping(params = "author")
-    public Book searchBookByAuthor(@RequestParam String author) throws Exception {
+    public Book searchBookByAuthor(@RequestParam String author) {
         return this.books.stream().filter(book -> hasAuthor(book, author)).findFirst().orElseThrow();
     }
 
@@ -45,7 +43,7 @@ public class BookRestController {
         return this.books.stream()
                 .filter(book -> hasAuthor(book, request.getAuthor()))
                 .filter(book -> hasIsbn(book, request.getIsbn()))
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
     }
 
     private boolean hasIsbn(Book book, String isbn) {
