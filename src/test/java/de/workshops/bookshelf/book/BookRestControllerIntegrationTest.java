@@ -27,6 +27,7 @@ import java.io.UnsupportedEncodingException;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
@@ -118,6 +119,7 @@ class BookRestControllerIntegrationTest {
         book.setIsbn("978-0321125217");
         book.setDescription("This is not a book about specific technologies. It offers readers a systematic approach to domain-driven design, presenting an extensive set of design best practices, experience-based techniques, and fundamental principles that facilitate the development of software projects facing complex domains.");
 
+        RestAssuredMockMvc.postProcessors(csrf().asHeader());
         MockMvcResponse mockMvcResponse = RestAssuredMockMvc.
                 given().
                 log().all().

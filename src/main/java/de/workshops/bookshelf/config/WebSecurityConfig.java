@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -44,7 +43,6 @@ public class WebSecurityConfig {
                             response.sendRedirect("/success");
                         }
                 ))
-                .csrf(AbstractHttpConfigurer::disable)
                 .headers().frameOptions().disable().and()
                 .build();
     }
