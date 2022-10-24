@@ -5,9 +5,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,8 +25,25 @@ public class WebSecurityConfig {
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll())
-                .csrf(AbstractHttpConfigurer::disable)
+        return http
+                .authorizeHttpRequests(
+                        authorize ->
+                                authorize
+                                        .antMatchers("/h2-console/**").permitAll()
+                                        .antMatchers("/actuator/**").permitAll()
+                                        .anyRequest().authenticated()
+                )
+                .httpBasic(withDefaults())
+                .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.successHandler(
+                        (request, response, authentication) -> {
+                            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+                            jdbcTemplate.update(
+                                    "UPDATE bookshelf_user SET lastlogin = NOW() WHERE username = ?",
+                                    userDetails.getUsername()
+                            );
+                            response.sendRedirect("/success");
+                        }
+                ))
                 .headers().frameOptions().disable().and()
                 .build();
     }
