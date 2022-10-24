@@ -24,7 +24,7 @@ class BookRepositoryTest {
 
         List<Book> books = StreamSupport
                 .stream(bookRepository.findAll().spliterator(), false)
-                .collect(Collectors.toList());
+                .toList();
 
         assertNotNull(books);
         assertEquals(4, books.size());
