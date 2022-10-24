@@ -58,7 +58,7 @@ class BookRestControllerIntegrationTest {
     @Test
     @WithMockUser
     void getAllBooks() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(BookRestController.REQUEST_URL))
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/book"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].title", is("Clean Code")))
@@ -82,7 +82,7 @@ class BookRestControllerIntegrationTest {
                 given().
                 log().all().
                 when().
-                get(BookRestController.REQUEST_URL).
+                get("/book").
                 then().
                 log().all().
                 statusCode(200).
@@ -96,7 +96,7 @@ class BookRestControllerIntegrationTest {
                 auth().basic("dbUser", "workshops").
                 log().all().
                 when().
-                get(BookRestController.REQUEST_URL).
+                get("/book").
                 then().
                 log().all().
                 statusCode(200).
@@ -125,7 +125,7 @@ class BookRestControllerIntegrationTest {
                 contentType(ContentType.JSON).
                 accept(ContentType.JSON).
                 when().
-                post(BookRestController.REQUEST_URL).
+                post("/book").
                 andReturn();
         mockMvcResponse.
                 then().
