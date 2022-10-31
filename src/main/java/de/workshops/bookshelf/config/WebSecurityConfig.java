@@ -31,8 +31,8 @@ public class WebSecurityConfig {
                                 authorize
                                         .requestMatchers(
                                                 "/h2-console/**",
-                                                "/actuator/**")
-                                        .permitAll()
+                                                "/actuator/**"
+                                        ).permitAll()
                                         .anyRequest().authenticated()
                 )
                 .httpBasic(withDefaults())
