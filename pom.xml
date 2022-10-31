@@ -16,6 +16,7 @@
 	<properties>
 		<java.version>17</java.version>
 		<springdoc.version>1.6.12</springdoc.version>
+		<hibernate-validator.version>8.0.0.Final</hibernate-validator.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -40,6 +41,11 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate.validator</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>${hibernate-validator.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.liquibase</groupId>

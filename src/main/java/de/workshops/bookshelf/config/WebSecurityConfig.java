@@ -29,8 +29,10 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(
                         authorize ->
                                 authorize
-                                        .requestMatchers("/h2-console/**").permitAll()
-                                        .requestMatchers("/actuator/**").permitAll()
+                                        .requestMatchers(
+                                                "/h2-console/**",
+                                                "/actuator/**")
+                                        .permitAll()
                                         .anyRequest().authenticated()
                 )
                 .httpBasic(withDefaults())
