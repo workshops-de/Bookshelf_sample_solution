@@ -1,6 +1,7 @@
 package de.workshops.bookshelf.config;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -29,10 +30,8 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(
                         authorize ->
                                 authorize
-                                        .requestMatchers(
-                                                "/h2-console/**",
-                                                "/actuator/**"
-                                        ).permitAll()
+                                        .requestMatchers(PathRequest.toH2Console()).permitAll()
+                                        .requestMatchers("/actuator/**").permitAll()
                                         .anyRequest().authenticated()
                 )
                 .httpBasic(withDefaults())
@@ -46,6 +45,8 @@ public class WebSecurityConfig {
                             response.sendRedirect("/success");
                         }
                 ))
+                .csrf().ignoringRequestMatchers(PathRequest.toH2Console())
+                .and()
                 .headers().frameOptions().disable().and()
                 .build();
     }
