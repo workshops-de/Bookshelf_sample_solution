@@ -1,4 +1,4 @@
-<configuration scan="true" scanPeriod="10 seconds" debug="false">
+<configuration>
     <springProfile name="default"><!-- no date, ansi colored, no file output -->
         <property name="PATTERN"
                   value="%d{HH:mm:ss.SSS} [%X{user}] %highlight(%-5level) %highlight(%48.48logger) - %msg%n"/>
@@ -29,15 +29,17 @@
         </appender>
     </springProfile>
 
-    <!-- For all those not explicitly defined below use this log level: -->
-    <root level="INFO">
-        <springProfile name="default, jenkins">
+    <!-- For those package not explicitly defined below use this log level: -->
+    <springProfile name="default">
+        <root level="info">
             <appender-ref ref="STDOUT"/>
-        </springProfile>
-        <springProfile name="prod">
+        </root>
+    </springProfile>
+    <springProfile name="prod">
+        <root level="error">
             <appender-ref ref="FILE"/>
-        </springProfile>
-    </root>
+        </root>
+    </springProfile>
 
     <logger name="de.workshops" level="debug"/>
 
