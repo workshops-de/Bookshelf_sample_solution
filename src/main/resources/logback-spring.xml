@@ -29,7 +29,7 @@
         </appender>
     </springProfile>
 
-    <!-- For those package not explicitly defined below use this log level: -->
+    <!-- For those packages not explicitly defined below use this log level: -->
     <springProfile name="default">
         <root level="info">
             <appender-ref ref="STDOUT"/>
