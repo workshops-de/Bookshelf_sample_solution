@@ -22,9 +22,9 @@
         </springProfile>
     </root>
 
+    <!-- Log levels: trace, debug, info, warn, error, off -->
     <logger name="de.workshops" level="debug"/>
 
-    <!-- Log levels: trace, debug, info, warn, error, off -->
     <logger name="liquibase" level="warn"/>
     <logger name="org.springframework" level="warn"/>
     <logger name="com.zaxxer.hikari" level="info"/>
