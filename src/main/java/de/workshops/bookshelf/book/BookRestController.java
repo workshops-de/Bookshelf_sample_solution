@@ -1,26 +1,42 @@
 package de.workshops.bookshelf.book;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
-import java.io.File;
-import java.util.Arrays;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @RestController
 @RequestMapping("/book")
+@Validated
 public class BookRestController {
 
-    @Autowired
-    private ObjectMapper mapper;
+    private final ObjectMapper mapper;
+    private final ResourceLoader resourceLoader;
 
     private List<Book> books;
 
+    public BookRestController(ObjectMapper mapper, ResourceLoader resourceLoader) {
+        this.mapper = mapper;
+        this.resourceLoader = resourceLoader;
+    }
+
     @PostConstruct
     public void init() throws Exception {
-        this.books = Arrays.asList(mapper.readValue(new File("target/classes/books.json"), Book[].class));
+        final var resource = resourceLoader.getResource("classpath:books.json");
+        books = mapper.readValue(resource.getInputStream(), new TypeReference<>() {});
     }
     
     @GetMapping
@@ -29,20 +45,20 @@ public class BookRestController {
     }
 
     @GetMapping("/{isbn}")
-    public Book getSingleBook(@PathVariable String isbn) {
-        return this.books.stream().filter(book -> hasIsbn(book, isbn)).findFirst().orElseThrow();
+    public Book getSingleBook(@PathVariable String isbn) throws Exception {
+        return this.books.stream().filter(book -> hasIsbn(book, isbn)).findFirst().orElseThrow(Exception::new);
     }
 
     @GetMapping(params = "author")
-    public Book searchBookByAuthor(@RequestParam String author) {
-        return this.books.stream().filter(book -> hasAuthor(book, author)).findFirst().orElseThrow();
+    public Book searchBookByAuthor(@RequestParam @NotBlank @Size(min = 3) String author) throws Exception {
+        return this.books.stream().filter(book -> hasAuthor(book, author)).findFirst().orElseThrow(Exception::new);
     }
 
     @PostMapping("/search")
-    public List<Book> searchBooks(@RequestBody BookSearchRequest request) {
+    public List<Book> searchBooks(@RequestBody @Valid BookSearchRequest request) {
         return this.books.stream()
-                .filter(book -> hasAuthor(book, request.getAuthor()))
-                .filter(book -> hasIsbn(book, request.getIsbn()))
+                .filter(book -> hasAuthor(book, request.author()))
+                .filter(book -> hasIsbn(book, request.isbn()))
                 .toList();
     }
 
