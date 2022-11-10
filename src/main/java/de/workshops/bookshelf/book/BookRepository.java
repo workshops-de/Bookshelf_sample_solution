@@ -1,12 +1,13 @@
 package de.workshops.bookshelf.book;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Repository;
 
-import java.io.File;
+import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 @Repository
@@ -14,8 +15,17 @@ import java.util.List;
 public class BookRepository {
 
     private final ObjectMapper mapper;
+    private final ResourceLoader resourceLoader;
+
+    private List<Book> books;
+
+    @PostConstruct
+    void initBookList() throws IOException {
+        final var resource = resourceLoader.getResource("classpath:books.json");
+        books = mapper.readValue(resource.getInputStream(), new TypeReference<>() {});
+    }
 
     public List<Book> getBooks() throws IOException {
-        return Arrays.asList(mapper.readValue(new File("target/classes/books.json"), Book[].class));
+        return books;
     }
 }
