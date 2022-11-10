@@ -2,15 +2,19 @@ package de.workshops.bookshelf.book;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
 @RestController
 @RequestMapping("/book")
+@Validated
 public class BookRestController {
 
     @Autowired
@@ -34,7 +38,7 @@ public class BookRestController {
     }
 
     @GetMapping(params = "author")
-    public Book searchBookByAuthor(@RequestParam String author) throws Exception {
+    public Book searchBookByAuthor(@RequestParam @NotBlank @Size(min = 3) String author) throws Exception {
         return this.books.stream().filter(book -> hasAuthor(book, author)).findFirst().orElseThrow(Exception::new);
     }
 
