@@ -35,9 +35,21 @@
     <logger name="org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator"
             level="debug"/> <!-- database connections -->
 
+<<<<<<< HEAD
     <logger name="org.springframework.boot" level="info"/>
     <logger name="org.springframework.boot.devtools" level="warn"/>
     <logger name="org.springframework.security" level="info"/>
+=======
+<<<<<<< HEAD
+    <logger name="org.springframework.boot" level="info" />
+    <logger name="org.springframework.boot.devtools" level="warn" />
+    <logger name="org.springframework.security" level="info" />
+=======
+    <logger name="org.springframework.boot" level="info"/>
+    <logger name="org.springframework.boot.devtools" level="warn"/>
+    <logger name="org.springframework.security" level="info"/>
+>>>>>>> Add_Liquibase_for_migrations
+>>>>>>> Enable_Spring_Boot_Actuator
     <!-- <logger name="org.springframework.test" level="debug" /> -->
     <logger name="org.springframework.web" level="debug"/>
 </configuration>
