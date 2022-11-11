@@ -1,13 +1,7 @@
 package de.workshops.bookshelf.book;
 
-import lombok.Getter;
-import lombok.Setter;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
-@Getter
-@Setter
-class BookSearchRequest {
-
-    private String author;
-
-    private String isbn;
+record BookSearchRequest (@NotBlank @Size(min = 3) String author, String isbn) {
 }

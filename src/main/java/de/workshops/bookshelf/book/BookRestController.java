@@ -3,13 +3,18 @@ package de.workshops.bookshelf.book;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @RestController
 @RequestMapping(BookRestController.REQUEST_URL)
 @RequiredArgsConstructor
+@Validated
 @CrossOrigin(origins = { "http://localhost:4200", "http://localhost:3000" })
 public class BookRestController {
 
@@ -33,12 +38,12 @@ public class BookRestController {
     }
 
     @GetMapping(params = "author")
-    public Book searchBookByAuthor(@RequestParam String author) throws BookException {
+    public Book searchBookByAuthor(@RequestParam @NotBlank @Size(min = 3) String author) throws BookException {
         return bookService.searchBookByAuthor(author);
     }
 
     @PostMapping("/search")
-    public List<Book> searchBooks(@RequestBody BookSearchRequest request) {
+    public List<Book> searchBooks(@RequestBody @Valid BookSearchRequest request) {
         return bookService.searchBooks(request);
     }
 
