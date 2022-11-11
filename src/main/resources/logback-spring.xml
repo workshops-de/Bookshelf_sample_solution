@@ -13,14 +13,16 @@
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
     <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
 
-    <root level="INFO">
-        <springProfile name="!prod">
+    <springProfile name="!prod">
+        <root level="info">
             <appender-ref ref="CONSOLE"/>
-        </springProfile>
-        <springProfile name="prod">
+        </root>
+    </springProfile>
+    <springProfile name="prod">
+        <root level="info">
             <appender-ref ref="FILE"/>
-        </springProfile>
-    </root>
+        </root>
+    </springProfile>
 
     <!-- Log levels: trace, debug, info, warn, error, off -->
     <logger name="de.workshops" level="debug"/>
