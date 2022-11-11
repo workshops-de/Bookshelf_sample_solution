@@ -29,8 +29,8 @@ class BookService {
 
     List<Book> searchBooks(BookSearchRequest request) {
         return getBooks().stream()
-                .filter(book -> hasAuthor(book, request.getAuthor()))
-                .filter(book -> hasIsbn(book, request.getIsbn()))
+                .filter(book -> hasAuthor(book, request.author()))
+                .filter(book -> hasIsbn(book, request.isbn()))
                 .toList();
     }
 
