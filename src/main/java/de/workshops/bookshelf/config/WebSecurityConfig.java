@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.Collections;
 
@@ -55,25 +55,21 @@ public class WebSecurityConfig {
     }
 
     private HttpSecurity configureHttpSecurity(HttpSecurity httpSecurity) throws Exception {
-        HttpSecurity customizedHttpSecurity = httpSecurity
+        String noOpRequestMatcherPattern = "/no-op";
+
+        return httpSecurity
                 .authorizeHttpRequests(
-                        authorize -> {
-                            AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry
-                                    authorizationManagerRequestMatcherRegistry = authorize
-                                    .requestMatchers("/actuator/**").permitAll();
-
-                            // This is necessary to omit the path for the H2 console during test runs (where
-                            // H2ConsoleProperties won't be available as a bean).
-                            if (h2ConsoleEnabled) {
-                                authorizationManagerRequestMatcherRegistry
-                                        // "/h2-console/**" unfortunately doesn't suffice here anymore, because
-                                        // H2ConsoleAutoConfiguration adds additional properties using an
-                                        // H2ConsoleRequestMatcher
-                                        .requestMatchers(PathRequest.toH2Console()).permitAll();
-                            }
-
-                            authorizationManagerRequestMatcherRegistry.anyRequest().authenticated();
-                        }
+                        authorize -> authorize
+                                // "/h2-console/**" unfortunately doesn't suffice here anymore, because
+                                // H2ConsoleAutoConfiguration adds additional properties using an
+                                // H2ConsoleRequestMatcher
+                                .requestMatchers(
+                                        h2ConsoleEnabled
+                                                ? PathRequest.toH2Console()
+                                                : new AntPathRequestMatcher(noOpRequestMatcherPattern)
+                                ).permitAll()
+                                .requestMatchers("/actuator/**").permitAll()
+                                .anyRequest().authenticated()
                 )
                 .httpBasic(withDefaults())
                 .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.successHandler(
@@ -86,14 +82,14 @@ public class WebSecurityConfig {
                             response.sendRedirect("/success");
                         }
                 ))
+                .csrf().ignoringRequestMatchers(
+                        // This is necessary to omit the CSRF token check for the H2 console during test runs
+                        // (where `H2ConsoleProperties`, which is used transitively by `PathRequest.toH2Console()`,
+                        // won't be available as a bean).
+                        h2ConsoleEnabled
+                                ? PathRequest.toH2Console()
+                                : new AntPathRequestMatcher(noOpRequestMatcherPattern)
+                ).and()
                 .headers().frameOptions().disable().and();
-
-        // This is necessary to omit the CSRF token check for the H2 console during test runs (where H2ConsoleProperties
-        // won't be available as a bean).
-        if (h2ConsoleEnabled) {
-            customizedHttpSecurity.csrf().ignoringRequestMatchers(PathRequest.toH2Console());
-        }
-
-        return customizedHttpSecurity;
     }
 }

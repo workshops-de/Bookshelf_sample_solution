@@ -31,7 +31,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        properties = "spring.h2.console.enabled=false" // This is needed to disable the H2 console (see WebSecurityConfig)
+        properties = "spring.h2.console.enabled=false" // This is required to disable the H2 console (see WebSecurityConfig)
 )
 @AutoConfigureMockMvc
 class BookRestControllerIntegrationTest {
