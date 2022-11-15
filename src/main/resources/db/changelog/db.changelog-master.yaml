@@ -72,7 +72,9 @@ databaseChangeLog:
         - sql:
             sql: >
               INSERT INTO bookshelf_user (username, password, firstname, lastname, role)
-              VALUES ('dbUser', 'password', 'Default', 'Default', 'ADMIN');
+              VALUES ('dbUser', 'password', 'Default', 'Default', 'USER');
+              INSERT INTO bookshelf_user (username, password, firstname, lastname, role)
+              VALUES ('dbAdmin', 'admin', 'Default', 'Default', 'ADMIN');
       rollback:
         - sql:
             sql: DELETE FROM bookshelf_user;

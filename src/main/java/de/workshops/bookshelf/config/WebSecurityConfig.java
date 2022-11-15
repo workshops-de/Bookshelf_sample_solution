@@ -34,6 +34,7 @@ public class WebSecurityConfig {
                 .httpBasic(withDefaults())
                 .formLogin(withDefaults())
                 .headers().frameOptions().disable().and()
+                .csrf().disable()
                 .build();
     }
 
