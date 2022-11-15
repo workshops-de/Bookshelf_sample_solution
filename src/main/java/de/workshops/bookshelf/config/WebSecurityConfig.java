@@ -44,6 +44,7 @@ public class WebSecurityConfig {
                         }
                 ))
                 .headers().frameOptions().disable().and()
+                .csrf().disable()
                 .build();
     }
 
