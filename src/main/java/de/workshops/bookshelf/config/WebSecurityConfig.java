@@ -31,30 +31,6 @@ public class WebSecurityConfig {
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        return configureHttpSecurity(httpSecurity).build();
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return username -> {
-            String sql = "SELECT * FROM bookshelf_user WHERE username = ?";
-
-            return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new User(
-                    rs.getString("username"),
-                    rs.getString("password"),
-                    Collections.singletonList(
-                            new SimpleGrantedAuthority(rs.getString("role"))
-                    )
-            ), username);
-        };
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    private HttpSecurity configureHttpSecurity(HttpSecurity httpSecurity) throws Exception {
         String noOpRequestMatcherPattern = "/no-op";
 
         return httpSecurity
@@ -90,6 +66,27 @@ public class WebSecurityConfig {
                                 ? PathRequest.toH2Console()
                                 : new AntPathRequestMatcher(noOpRequestMatcherPattern)
                 ).and()
-                .headers().frameOptions().disable().and();
+                .headers().frameOptions().disable().and()
+                .build();
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return username -> {
+            String sql = "SELECT * FROM bookshelf_user WHERE username = ?";
+
+            return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new User(
+                    rs.getString("username"),
+                    rs.getString("password"),
+                    Collections.singletonList(
+                            new SimpleGrantedAuthority(rs.getString("role"))
+                    )
+            ), username);
+        };
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }
