@@ -72,7 +72,9 @@ databaseChangeLog:
         - sql:
             sql: >
               INSERT INTO bookshelf_user (username, password, firstname, lastname, role)
-              VALUES ('dbUser', 'password', 'Default', 'Default', 'ADMIN');
+              VALUES ('dbUser', 'password', 'Default', 'Default', 'ROLE_USER');
+              INSERT INTO bookshelf_user (username, password, firstname, lastname, role)
+              VALUES ('dbAdmin', 'admin', 'Default', 'Default', 'ROLE_ADMIN');
       rollback:
         - sql:
             sql: DELETE FROM bookshelf_user;
@@ -87,11 +89,15 @@ databaseChangeLog:
             sql: >
               UPDATE bookshelf_user SET password = '$2a$10$vAiSOk2MzsgZ8EvDNSEkWuZ47.bSwEHTgnl4mN.Zgz4TrxZQ4S6Ee'
               WHERE username = 'dbUser';
+              UPDATE bookshelf_user SET password = '$2a$12$v6wQQr6lRRc2xvKDszxBRe1womtDMZ6A7TQKBk/5qQPzbkZfj6QMe'
+              WHERE username = 'dbAdmin';
       rollback:
         - sql:
             sql: >
               UPDATE bookshelf_user SET password = 'password'
               WHERE username = 'dbUser';
+              UPDATE bookshelf_user SET password = 'admin'
+              WHERE username = 'dbAdmin';
 
   - changeSet:
       id: addDefaultBooks
