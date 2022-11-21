@@ -16,7 +16,6 @@
 	<properties>
 		<java.version>17</java.version>
 		<springdoc.version>1.6.13</springdoc.version>
-		<versions-maven-plugin.version>2.13.0</versions-maven-plugin.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -120,7 +119,6 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>versions-maven-plugin</artifactId>
-				<version>${versions-maven-plugin.version}</version>
 			</plugin>
 		</plugins>
 	</build>
