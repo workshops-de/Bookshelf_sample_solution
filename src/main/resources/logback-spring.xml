@@ -32,8 +32,7 @@
 
     <logger name="org.hibernate" level="warn"/>
     <logger name="org.hibernate.SQL" level="warn"/>
-    <logger name="org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator"
-            level="debug"/> <!-- database connections -->
+    <logger name="org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator" level="debug"/> <!-- database connections -->
 
     <logger name="org.springframework.boot" level="info"/>
     <logger name="org.springframework.boot.devtools" level="warn"/>
