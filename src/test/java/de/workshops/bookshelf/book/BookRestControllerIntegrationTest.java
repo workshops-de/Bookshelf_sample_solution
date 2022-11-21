@@ -105,7 +105,7 @@ class BookRestControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(roles = {"ADMIN"})
     void createBook() throws UnsupportedEncodingException, JsonProcessingException {
         RestAssuredMockMvc.standaloneSetup(
                 MockMvcBuilders
