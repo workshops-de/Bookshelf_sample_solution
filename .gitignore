@@ -61,3 +61,6 @@ build/
 
 ### H2 database files ###
 *.db
+
+### Versions Maven Plugin ###
+pom.xml.versionsBackup
