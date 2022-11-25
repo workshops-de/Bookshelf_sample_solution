@@ -34,19 +34,7 @@ public class WebSecurityConfig {
         String noOpRequestMatcherPattern = "/no-op";
 
         return httpSecurity
-                .authorizeHttpRequests(
-                        authorize -> authorize
-                                // "/h2-console/**" unfortunately doesn't suffice here anymore, because
-                                // H2ConsoleAutoConfiguration adds additional properties using an
-                                // H2ConsoleRequestMatcher
-                                .requestMatchers(
-                                        h2ConsoleEnabled
-                                                ? PathRequest.toH2Console()
-                                                : new AntPathRequestMatcher(noOpRequestMatcherPattern)
-                                ).permitAll()
-                                .requestMatchers("/actuator/**").permitAll()
-                                .anyRequest().authenticated()
-                )
+                .authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll())
                 .httpBasic(withDefaults())
                 .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.successHandler(
                         (request, response, authentication) -> {
