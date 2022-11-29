@@ -21,7 +21,6 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(
                         authorize ->
                                 authorize
-                                        .antMatchers("/h2-console/**").permitAll()
                                         .anyRequest().authenticated()
                 )
                 .httpBasic(withDefaults())
