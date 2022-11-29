@@ -28,13 +28,10 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(
                         authorize ->
                                 authorize
-                                        .antMatchers("/h2-console/**").permitAll()
                                         .anyRequest().authenticated()
                 )
                 .httpBasic(withDefaults())
                 .formLogin(withDefaults())
-                .headers().frameOptions().disable().and()
-                .csrf().disable()
                 .build();
     }
 
