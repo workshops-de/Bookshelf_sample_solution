@@ -25,8 +25,3 @@ spring:
       ddl-auto: validate
   liquibase:
     drop-first: true
-  sql:
-    init:
-      # The default value is 'embedded', which only works for in-memory databases.
-      # Since we're using a 'non-embedded' database here, we now need to set this to 'always'.
-      mode: always
