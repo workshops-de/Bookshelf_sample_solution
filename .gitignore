@@ -56,6 +56,15 @@ build/
 ### VS Code ###
 .vscode/
 
+### H2 database files ###
+*.db
+
+### Versions Maven Plugin ###
+pom.xml.versionsBackup
+
+### Environment (direnv) ###
+/.envrc
+
 ### macOS ###
 .DS_Store
 
