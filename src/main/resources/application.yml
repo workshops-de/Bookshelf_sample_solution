@@ -11,20 +11,17 @@ server:
 
 spring:
   datasource:
-    url: jdbc:h2:./testdb;DB_CLOSE_DELAY=-1;AUTO_SERVER=TRUE
-    driver-class-name: org.h2.Driver
-    username: sa
-    password: password
-  sql:
-    init:
-      mode: always
+    url: jdbc:postgresql://tai.db.elephantsql.com:5432/tdygxryv # adapt URL to your database
+    driver-class-name: org.postgresql.Driver
+    username: tdygxryv # adapt username accordingly
+    # set PG_PASSWORD in your environment, e.g., by running "export PG_PASSWORD=..." in the command line
+    password: ${PG_PASSWORD}
+    hikari:
+      maximum-pool-size: 1 # disabling concurrent connections due to free plan limitations
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     open-in-view: false
     hibernate:
       ddl-auto: validate
-  h2:
-    console:
-      enabled: true
   liquibase:
     drop-first: true
