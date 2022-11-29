@@ -18,6 +18,9 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     open-in-view: false
+    hibernate:
+      # Re-generating the DDL upon each application start to account for data model changes.
+      ddl-auto: create-drop
   h2:
     console:
       enabled: true
