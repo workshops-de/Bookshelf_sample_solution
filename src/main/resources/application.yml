@@ -16,7 +16,7 @@ spring:
     username: tdygxryv
     password: ${PG_PASSWORD}
     hikari:
-      maximum-pool-size: 1
+      maximum-pool-size: 1 # disabling concurrent connections due to free plan limitations
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     open-in-view: false
