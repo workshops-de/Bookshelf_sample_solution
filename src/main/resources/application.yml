@@ -23,7 +23,7 @@ spring:
     open-in-view: false
     generate-ddl: true # By default, DDL statements will only be generated for embedded databases.
     # By default, Spring Boot will try to populate the database from data.sql on startup,
-    # i.e. before JPA has the oppportunity to generate DDL statements from classes annotated with @Entity.
+    # i.e. before JPA has the opportunity to generate DDL statements from classes annotated with @Entity.
     defer-datasource-initialization: true
   sql:
     init:
