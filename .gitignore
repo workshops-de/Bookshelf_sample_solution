@@ -62,7 +62,7 @@ build/
 ### Versions Maven Plugin ###
 pom.xml.versionsBackup
 
-### Environment ###
+### Environment (direnv) ###
 /.envrc
 
 ### macOS ###
