@@ -67,6 +67,3 @@ pom.xml.versionsBackup
 
 ### macOS ###
 .DS_Store
-
-### H2 database files ###
-*.db
