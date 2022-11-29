@@ -29,7 +29,6 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(
                         authorize ->
                                 authorize
-                                        .antMatchers("/h2-console/**").permitAll()
                                         .anyRequest().authenticated()
                 )
                 .httpBasic(withDefaults())
@@ -43,8 +42,6 @@ public class WebSecurityConfig {
                             response.sendRedirect("/success");
                         }
                 ))
-                .headers().frameOptions().disable().and()
-                .csrf().disable()
                 .build();
     }
 
