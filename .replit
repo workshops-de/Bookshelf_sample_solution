@@ -5,3 +5,6 @@ run = ["java", "-classpath", ".:target/*", "BookshelfApplication"]
 
 entrypoint = "BookshelfApplication.java"
 hidden = ["**/*.class"]
+
+[nix]
+channel = "stable-21_11"
