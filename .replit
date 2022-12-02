@@ -1,2 +1,5 @@
-javac *.java
-java de.workshops.bookshelf.BookshelfApplication
+compile = "javac -classpath .:target/* -d . $(find . -type f -name '*.java')"
+run = ["java", "-classpath", ".:target/*", "BookshelfApplication"]
+
+entrypoint = "BookshelfApplication.java"
+hidden = ["**/*.class"]
