@@ -1,2 +1,2 @@
-mvn clean install
-mvn spring-boot:run
+javac *.java
+java de.workshops.bookshelf.BookshelfApplication
