@@ -1,10 +1,4 @@
-language = "java17"
-
-compile = "javac -classpath .:target/* -d . $(find . -type f -name '*.java')"
-run = ["java", "-classpath", ".:target/*", "BookshelfApplication"]
-
-entrypoint = "BookshelfApplication.java"
-hidden = ["**/*.class"]
+run = "mvnw spring-boot:run"
 
 [nix]
 channel = "stable-21_11"
