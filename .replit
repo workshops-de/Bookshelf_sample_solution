@@ -1,4 +1,4 @@
-run = "mvnw spring-boot:run"
+run = "./mvnw spring-boot:run"
 
 [nix]
 channel = "stable-21_11"
