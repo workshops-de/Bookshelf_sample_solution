@@ -1,3 +1,5 @@
+language = "java17"
+
 compile = "javac -classpath .:target/* -d . $(find . -type f -name '*.java')"
 run = ["java", "-classpath", ".:target/*", "BookshelfApplication"]
 
