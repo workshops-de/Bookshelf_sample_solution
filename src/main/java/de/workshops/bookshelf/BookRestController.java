@@ -2,19 +2,19 @@ package de.workshops.bookshelf;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.io.IOException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/book")
-@RequiredArgsConstructor
+@Validated
 public class BookRestController {
 
     private final ObjectMapper mapper;
@@ -23,18 +23,37 @@ public class BookRestController {
 
     private List<Book> books;
 
+    public BookRestController(ObjectMapper mapper, ResourceLoader resourceLoader) {
+        this.mapper = mapper;
+        this.resourceLoader = resourceLoader;
+    }
+
     @PostConstruct
     public void init() throws IOException {
-        this.books = mapper.readValue(
-                resourceLoader
-                        .getResource("classpath:books.json")
-                        .getInputStream(),
-                new TypeReference<>() {}
-        );
+        final var resource = resourceLoader.getResource("classpath:books.json");
+        books = mapper.readValue(resource.getInputStream(), new TypeReference<>() {});
     }
 
     @GetMapping
     public List<Book> getAllBooks() {
         return books;
+    }
+
+    @GetMapping("/{isbn}")
+    public Book getSingleBook(@PathVariable String isbn) throws Exception {
+        return this.books.stream().filter(book -> hasIsbn(book, isbn)).findFirst().orElseThrow(Exception::new);
+    }
+
+    @GetMapping(params = "author")
+    public Book searchBookByAuthor(@RequestParam @NotBlank @Size(min = 3) String author) throws Exception {
+        return this.books.stream().filter(book -> hasAuthor(book, author)).findFirst().orElseThrow(Exception::new);
+    }
+
+    private boolean hasIsbn(Book book, String isbn) {
+        return book.getIsbn().equals(isbn);
+    }
+
+    private boolean hasAuthor(Book book, String author) {
+        return book.getAuthor().contains(author);
     }
 }
