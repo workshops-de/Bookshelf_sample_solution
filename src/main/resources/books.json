@@ -1,0 +1,20 @@
+[
+    {
+        "isbn": "978-0201633610",
+        "title": "Design Patterns",
+        "author": "Erich Gamma",
+        "description": "Mit Design Patterns lassen sich wiederkehrende Aufgaben in der objektorientierten Softwareentwicklung effektiv lösen."
+    },
+    {
+        "isbn": "978-3826655487",
+        "title": "Clean Code",
+        "author": "Robert C. Martin",
+        "description": "Das einzige praxisnahe Buch, mit dem Sie lernen, guten Code zu schreiben!"
+    },
+    {
+        "isbn": "978-3836211161",
+        "title": "Coding for Fun",
+        "author": "Gottfried Wolmeringer",
+        "description": "Dieses unterhaltsam geschriebene Buch führt Sie spielerisch durch die spektakuläre Geschichte unserer Blechkollegen."
+    }
+]
