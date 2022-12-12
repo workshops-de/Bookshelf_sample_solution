@@ -6,7 +6,7 @@
     <springProfile name="prod">
         <property name="FILE_LOG_PATTERN"
                   value="%d{dd.MM.yyyy HH:mm:ss.SSS} [%X{user}] [%thread] %-5level %logger{36} - %msg%n"/>
-        <property name="LOG_FILE" value="workshop"/>
+        <property name="LOG_FILE" value="workshop.log"/>
         <include resource="org/springframework/boot/logging/logback/file-appender.xml"/>
     </springProfile>
 
