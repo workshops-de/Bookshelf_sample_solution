@@ -10,6 +10,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -18,6 +19,7 @@ import java.util.List;
 public class BookRestController {
 
     private final ObjectMapper mapper;
+
     private final ResourceLoader resourceLoader;
 
     private List<Book> books;
@@ -28,11 +30,15 @@ public class BookRestController {
     }
 
     @PostConstruct
-    public void init() throws Exception {
-        final var resource = resourceLoader.getResource("classpath:books.json");
-        books = mapper.readValue(resource.getInputStream(), new TypeReference<>() {});
+    public void init() throws IOException {
+        this.books = mapper.readValue(
+                resourceLoader
+                        .getResource("classpath:books.json")
+                        .getInputStream(),
+                new TypeReference<>() {}
+        );
     }
-    
+
     @GetMapping
     public List<Book> getAllBooks() {
         return books;
