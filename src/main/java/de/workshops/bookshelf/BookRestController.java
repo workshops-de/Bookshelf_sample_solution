@@ -30,8 +30,12 @@ public class BookRestController {
 
     @PostConstruct
     public void init() throws IOException {
-        final var resource = resourceLoader.getResource("classpath:books.json");
-        books = mapper.readValue(resource.getInputStream(), new TypeReference<>() {});
+        this.books = mapper.readValue(
+                resourceLoader
+                        .getResource("classpath:books.json")
+                        .getInputStream(),
+                new TypeReference<>() {}
+        );
     }
 
     @GetMapping
