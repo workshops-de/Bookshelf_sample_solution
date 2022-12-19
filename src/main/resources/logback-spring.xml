@@ -6,21 +6,23 @@
     <springProfile name="prod">
         <property name="FILE_LOG_PATTERN"
                   value="%d{dd.MM.yyyy HH:mm:ss.SSS} [%X{user}] [%thread] %-5level %logger{36} - %msg%n"/>
-        <property name="LOG_FILE" value="workshop"/>
+        <property name="LOG_FILE" value="workshop.log"/>
         <include resource="org/springframework/boot/logging/logback/file-appender.xml"/>
     </springProfile>
 
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
     <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
 
-    <root level="INFO">
-        <springProfile name="!prod">
+    <springProfile name="!prod">
+        <root level="info">
             <appender-ref ref="CONSOLE"/>
-        </springProfile>
-        <springProfile name="prod">
+        </root>
+    </springProfile>
+    <springProfile name="prod">
+        <root level="info">
             <appender-ref ref="FILE"/>
-        </springProfile>
-    </root>
+        </root>
+    </springProfile>
 
     <!-- Log levels: trace, debug, info, warn, error, off -->
     <logger name="de.workshops" level="debug"/>
@@ -37,6 +39,7 @@
     <logger name="org.springframework.boot" level="info"/>
     <logger name="org.springframework.boot.devtools" level="warn"/>
     <logger name="org.springframework.security" level="info"/>
+    <logger name="org.springframework.boot.autoconfigure.security.servlet" level="info"/>
     <!-- <logger name="org.springframework.test" level="debug" /> -->
     <logger name="org.springframework.web" level="debug"/>
 </configuration>
