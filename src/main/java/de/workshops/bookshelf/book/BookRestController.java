@@ -21,6 +21,7 @@ import java.util.List;
 public class BookRestController {
 
     private final ObjectMapper mapper;
+
     private final ResourceLoader resourceLoader;
 
     private List<Book> books;
@@ -32,10 +33,14 @@ public class BookRestController {
 
     @PostConstruct
     public void init() throws IOException {
-        final var resource = resourceLoader.getResource("classpath:books.json");
-        books = mapper.readValue(resource.getInputStream(), new TypeReference<>() {});
+        this.books = mapper.readValue(
+                resourceLoader
+                        .getResource("classpath:books.json")
+                        .getInputStream(),
+                new TypeReference<>() {}
+        );
     }
-    
+
     @GetMapping
     public List<Book> getAllBooks() {
         return books;
