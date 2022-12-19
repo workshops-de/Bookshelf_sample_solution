@@ -27,10 +27,9 @@ public class WebSecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(
-                        authorize ->
-                                authorize
-                                        .antMatchers("/actuator/**").permitAll()
-                                        .anyRequest().authenticated()
+                        authorize -> authorize
+                                .requestMatchers("/actuator/**").permitAll()
+                                .anyRequest().authenticated()
                 )
                 .httpBasic(withDefaults())
                 .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.successHandler(
