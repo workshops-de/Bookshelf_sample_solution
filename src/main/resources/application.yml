@@ -1,6 +1,7 @@
 application:
-  title: Bookshelf
-  version: 0.0.1
+  title: @project.name@
+  version: @project.version@
+
 ---
 spring:
   config:
