@@ -16,6 +16,7 @@
 	<properties>
 		<java.version>17</java.version>
 		<springdoc.version>1.6.13</springdoc.version>
+		<schematic.version>0.0.3</schematic.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -46,6 +47,12 @@
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.bjoernkw</groupId>
+			<artifactId>schematic</artifactId>
+			<version>${schematic.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 
