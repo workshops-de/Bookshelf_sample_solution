@@ -230,7 +230,6 @@
 					"script": {
 						"exec": [
 							"pm.collectionVariables.set(\"xsrf-token\", pm.cookies.get(\"XSRF-TOKEN\"))",
-							"console.log(pm.collectionVariables.get(\"xsrf-token\"));",
 							""
 						],
 						"type": "text/javascript"
