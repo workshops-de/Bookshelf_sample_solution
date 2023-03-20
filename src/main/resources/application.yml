@@ -1,6 +1,6 @@
 application:
-  title: @project.name@
-  version: @project.version@
+  title: '@project.name@'
+  version: '@project.version@'
 
 bookshelf:
   some-number: 11
