@@ -25,3 +25,10 @@ spring:
       ddl-auto: validate
   liquibase:
     drop-first: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
