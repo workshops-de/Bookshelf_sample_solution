@@ -112,6 +112,7 @@ class BookRestControllerIntegrationTest {
                         .standaloneSetup(bookRestController)
                         .apply(SecurityMockMvcConfigurers.springSecurity(springSecurityFilterChain))
         );
+        RestAssuredMockMvc.postProcessors(csrf().asHeader());
 
         Book book = new Book();
         book.setAuthor("Eric Evans");
@@ -119,7 +120,6 @@ class BookRestControllerIntegrationTest {
         book.setIsbn("978-0321125217");
         book.setDescription("This is not a book about specific technologies. It offers readers a systematic approach to domain-driven design, presenting an extensive set of design best practices, experience-based techniques, and fundamental principles that facilitate the development of software projects facing complex domains.");
 
-        RestAssuredMockMvc.postProcessors(csrf().asHeader());
         MockMvcResponse mockMvcResponse = RestAssuredMockMvc.
                 given().
                 log().all().
