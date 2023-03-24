@@ -31,6 +31,11 @@ public class WebSecurityConfig {
         // https://docs.spring.io/spring-security/reference/5.8/migration/servlet/exploits.html#_i_am_using_angularjs_or_another_javascript_framework,
         // and https://github.com/spring-projects/spring-security/issues/12915#issuecomment-1482669321
         CookieCsrfTokenRepository tokenRepository = CookieCsrfTokenRepository.withHttpOnlyFalse();
+        // Please note: This disables CSRF BREACH protection.
+        // https://blog.gypsyengineer.com/en/security/csrf-tokens-in-spring-and-the-breach-attack.html
+        // https://security.stackexchange.com/questions/43669/with-breach-attack-is-session-based-csrf-token-still-secure
+        // See this more elaborate implementation for both use cases (JavaScript and default login form) to work
+        // and still including CSRF BREACH protection: https://github.com/spring-projects/spring-security/issues/12915#issuecomment-1482931700
         CsrfTokenRequestAttributeHandler delegate = new CsrfTokenRequestAttributeHandler();
 
         return http
