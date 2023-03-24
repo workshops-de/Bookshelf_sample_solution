@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 
 import java.util.Collections;
 
@@ -24,9 +26,29 @@ public class WebSecurityConfig {
     private final JdbcTemplate jdbcTemplate;
 
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity
-                .authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll())
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        // see https://docs.spring.io/spring-security/reference/5.8/migration/servlet/exploits.html,
+        // https://docs.spring.io/spring-security/reference/5.8/migration/servlet/exploits.html#_i_am_using_angularjs_or_another_javascript_framework,
+        // and https://github.com/spring-projects/spring-security/issues/12915#issuecomment-1482669321
+        CookieCsrfTokenRepository tokenRepository = CookieCsrfTokenRepository.withHttpOnlyFalse();
+        // Please note: This disables CSRF BREACH protection.
+        // https://blog.gypsyengineer.com/en/security/csrf-tokens-in-spring-and-the-breach-attack.html
+        // https://security.stackexchange.com/questions/43669/with-breach-attack-is-session-based-csrf-token-still-secure
+        // See this more elaborate implementation for both use cases (JavaScript and default login form) to work
+        // and still including CSRF BREACH protection: https://github.com/spring-projects/spring-security/issues/12915#issuecomment-1482931700
+        CsrfTokenRequestAttributeHandler delegate = new CsrfTokenRequestAttributeHandler();
+
+        return http
+                .authorizeHttpRequests(
+                        authorize -> authorize
+                                .requestMatchers("/actuator/**").permitAll()
+                                .anyRequest().authenticated()
+                )
+                .csrf(
+                        csrf -> csrf
+                                .csrfTokenRepository(tokenRepository)
+                                .csrfTokenRequestHandler(delegate::handle) // delegate::handle is required here to ensure proper CSRF token handling
+                )
                 .httpBasic(withDefaults())
                 .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.successHandler(
                         (request, response, authentication) -> {
