@@ -16,6 +16,7 @@ import java.util.List;
 @RequestMapping(BookRestController.REQUEST_URL)
 @RequiredArgsConstructor
 @Validated
+@CrossOrigin(origins = { "http://localhost:4200", "http://localhost:3000" })
 public class BookRestController {
 
     static final String REQUEST_URL = "/book";
