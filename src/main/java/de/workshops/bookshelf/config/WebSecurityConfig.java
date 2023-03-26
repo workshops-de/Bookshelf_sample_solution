@@ -3,6 +3,7 @@ package de.workshops.bookshelf.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -42,6 +43,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(
                         authorize -> authorize
                                 .requestMatchers("/actuator/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/book/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .csrf(
