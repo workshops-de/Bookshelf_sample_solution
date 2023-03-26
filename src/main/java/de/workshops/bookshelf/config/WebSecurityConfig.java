@@ -49,6 +49,7 @@ public class WebSecurityConfig {
                                 .csrfTokenRepository(tokenRepository)
                                 .csrfTokenRequestHandler(delegate::handle) // delegate::handle is required here to ensure proper CSRF token handling
                 )
+                .cors(withDefaults())
                 .httpBasic(withDefaults())
                 .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.successHandler(
                         (request, response, authentication) -> {
