@@ -67,3 +67,6 @@ pom.xml.versionsBackup
 
 ### macOS ###
 .DS_Store
+
+### just ###
+.pom.xml.temp
