@@ -271,7 +271,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"isbn\": \"{{isbn}}\",\n    \"author\": \"Sample author\",\n    \"title\": \"Sample title\",\n    \"description\": \"Sample description\"\n}\n",
+					"raw": "{\n    \"title\": \"Test\",\n    \"description\": \"Test\",\n    \"author\": \"Test\",\n    \"isbn\": \"978-0201633611\"\n}\n",
 					"options": {
 						"raw": {
 							"language": "json"
