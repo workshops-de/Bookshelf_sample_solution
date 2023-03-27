@@ -5,11 +5,14 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+import java.time.Instant;
 import java.util.List;
 
 @RestController
@@ -62,7 +65,12 @@ public class BookRestController {
     }
 
     @ExceptionHandler(BookException.class)
-    public ResponseEntity<String> error(BookException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    public ProblemDetail error(BookException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
+        problemDetail.setTitle("Book Not Found");
+        problemDetail.setType(URI.create("http://localhost:8080/book_exception.html"));
+        problemDetail.setProperty("timestamp", Instant.now());
+
+        return problemDetail;
     }
 }
