@@ -2,19 +2,21 @@ package de.workshops.bookshelf.book;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -73,26 +75,32 @@ class BookRestControllerIntegrationTest {
     }
 
     @Test
-    void createBook() {
-        RestAssuredMockMvc.standaloneSetup(bookRestController);
+    void createBook() throws Exception {
+        String author = "Eric Evans";
+        String title = "Domain-Driven Design: Tackling Complexity in the Heart of Software";
+        String isbn = "978-0321125217";
+        String description = "This is not a book about specific technologies. It offers readers a systematic approach to domain-driven design, presenting an extensive set of design best practices, experience-based techniques, and fundamental principles that facilitate the development of software projects facing complex domains.";
 
-        Book book = new Book();
-        book.setAuthor("Eric Evans");
-        book.setTitle("Domain-Driven Design: Tackling Complexity in the Heart of Software");
-        book.setIsbn("978-0321125217");
-        book.setDescription("This is not a book about specific technologies. It offers readers a systematic approach to domain-driven design, presenting an extensive set of design best practices, experience-based techniques, and fundamental principles that facilitate the development of software projects facing complex domains.");
+        Book expectedBook = new Book();
+        expectedBook.setAuthor(author);
+        expectedBook.setTitle(title);
+        expectedBook.setIsbn(isbn);
+        expectedBook.setDescription(description);
 
-        RestAssuredMockMvc.
-                given().
-                log().all().
-                body(book).
-                contentType(ContentType.JSON).
-                accept(ContentType.JSON).
-                when().
-                post("/book").
-                then().
-                log().all().
-                statusCode(200).
-                body("author", equalTo("Eric Evans"));
+        var mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/book")
+                        .content("""
+                                {
+                                    "isbn": "%s",
+                                    "title": "%s",
+                                    "author": "%s",
+                                    "description": "%s"
+                                }""".formatted(isbn, title, author, description))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+        String jsonPayload = mvcResult.getResponse().getContentAsString();
+
+        Book book = objectMapper.readValue(jsonPayload, Book.class);
+        assertEquals(expectedBook, book);
     }
 }
