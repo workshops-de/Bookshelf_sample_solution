@@ -21,16 +21,16 @@ public class BookRestController {
     
     @GetMapping
     public List<Book> getAllBooks() {
-        return bookService.getBooks();
+        return bookService.getAllBooks();
     }
 
     @GetMapping("/{isbn}")
-    public Book getSingleBook(@PathVariable String isbn) throws BookException {
-        return bookService.getSingleBook(isbn);
+    public Book getBookByIsbn(@PathVariable String isbn) throws BookException {
+        return bookService.searchBookByIsbn(isbn);
     }
 
     @GetMapping(params = "author")
-    public Book searchBookByAuthor(@RequestParam @NotBlank @Size(min = 3) String author) throws BookException {
+    public Book getBookByAuthor(@RequestParam @NotBlank @Size(min = 3) String author) throws BookException {
         return bookService.searchBookByAuthor(author);
     }
 
