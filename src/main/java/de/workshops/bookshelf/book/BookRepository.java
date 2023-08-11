@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class BookRepository {
+class BookRepository {
 
     private final ObjectMapper mapper;
     private final ResourceLoader resourceLoader;
@@ -25,7 +25,7 @@ public class BookRepository {
         books = mapper.readValue(resource.getInputStream(), new TypeReference<>() {});
     }
 
-    public List<Book> getBooks() throws IOException {
+    List<Book> findAllBooks() {
         return books;
     }
 }
