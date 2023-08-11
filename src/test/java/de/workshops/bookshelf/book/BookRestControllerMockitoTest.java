@@ -22,7 +22,7 @@ class BookRestControllerMockitoTest {
 
     @Test
     void getAllBooks() {
-        Mockito.when(bookService.getBooks()).thenReturn(Collections.emptyList());
+        Mockito.when(bookService.getAllBooks()).thenReturn(Collections.emptyList());
 
         assertNotNull(bookRestController.getAllBooks().getBody());
         assertEquals(0, bookRestController.getAllBooks().getBody().size());
