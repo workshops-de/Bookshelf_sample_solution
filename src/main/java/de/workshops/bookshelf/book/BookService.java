@@ -4,41 +4,40 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class BookService {
+class BookService {
 
     private final BookRepository bookRepository;
 
-    public List<Book> getBooks() {
-        List<Book> books = new ArrayList<>();
-        bookRepository.findAll().forEach(books::add);
-
-        return books;
+    List<Book> getAllBooks() {
+        return bookRepository.findAll();
     }
 
-    public Book getSingleBook(String isbn) throws BookException {
-        return getBooks().stream().filter(book -> hasIsbn(book, isbn)).findFirst().orElseThrow(BookException::new);
+    Book searchBookByIsbn(String isbn) throws BookException {
+        final var book = bookRepository.findByIsbn(isbn);
+        if (book == null) {
+            throw new BookException();
+        }
+        return book;
     }
 
-    public Book searchBookByAuthor(String author) throws BookException {
-        return getBooks().stream().filter(book -> hasAuthor(book, author)).findFirst().orElseThrow(BookException::new);
+    Book searchBookByAuthor(String author) throws BookException {
+        return getAllBooks().stream().filter(book -> hasAuthor(book, author)).findFirst().orElseThrow(BookException::new);
     }
 
-    public List<Book> searchBooks(BookSearchRequest request) {
-        return getBooks().stream()
+    List<Book> searchBooks(BookSearchRequest request) {
+        return getAllBooks().stream()
                 .filter(book -> hasAuthor(book, request.author()))
                 .filter(book -> hasIsbn(book, request.isbn()))
                 .toList();
     }
 
-    public Book createBook(Book book) {
+    Book createBook(Book book) {
         bookRepository.save(book);
-
         return book;
     }
 
