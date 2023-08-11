@@ -28,21 +28,27 @@ public class BookRestController {
 
     @GetMapping
     public ResponseEntity<List<Book>> getAllBooks() {
+<<<<<<< HEAD
         List<Book> result = bookService.getBooks();
         if (result.isEmpty()) {
             return ResponseEntity.notFound().build();
+=======
+        List<Book> result = bookService.getAllBooks();
+        if (result == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+>>>>>>> Enable_Spring_Boot_Actuator
         } else {
             return ResponseEntity.ok(result);
         }
     }
 
     @GetMapping("/{isbn}")
-    public Book getSingleBook(@PathVariable String isbn) throws BookException {
-        return bookService.getSingleBook(isbn);
+    public Book getBookByIsbn(@PathVariable String isbn) throws BookException {
+        return bookService.searchBookByIsbn(isbn);
     }
 
     @GetMapping(params = "author")
-    public Book searchBookByAuthor(@RequestParam @NotBlank @Size(min = 3) String author) throws BookException {
+    public Book getBookByAuthor(@RequestParam @NotBlank @Size(min = 3) String author) throws BookException {
         return bookService.searchBookByAuthor(author);
     }
 

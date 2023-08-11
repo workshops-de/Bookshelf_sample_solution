@@ -22,7 +22,11 @@ class BookRestControllerMockitoTest {
 
     @Test
     void getAllBooks() {
+<<<<<<< HEAD
         Mockito.when(bookService.getBooks()).thenReturn(Collections.singletonList(new Book()));
+=======
+        Mockito.when(bookService.getAllBooks()).thenReturn(Collections.emptyList());
+>>>>>>> Enable_Spring_Boot_Actuator
 
         assertNotNull(bookRestController.getAllBooks().getBody());
         assertEquals(HttpStatus.OK, bookRestController.getAllBooks().getStatusCode());

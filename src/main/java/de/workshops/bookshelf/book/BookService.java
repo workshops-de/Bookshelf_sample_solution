@@ -14,6 +14,7 @@ class BookService {
 
     private final BookRepository bookRepository;
 
+<<<<<<< HEAD
     List<Book> getBooks() {
         return StreamSupport.stream(bookRepository.findAll().spliterator(), false)
             .toList();
@@ -29,6 +30,26 @@ class BookService {
 
     List<Book> searchBooks(BookSearchRequest request) {
         return getBooks().stream()
+=======
+    List<Book> getAllBooks() {
+        return bookRepository.findAll();
+    }
+
+    Book searchBookByIsbn(String isbn) throws BookException {
+        final var book = bookRepository.findByIsbn(isbn);
+        if (book == null) {
+            throw new BookException();
+        }
+        return book;
+    }
+
+    Book searchBookByAuthor(String author) throws BookException {
+        return getAllBooks().stream().filter(book -> hasAuthor(book, author)).findFirst().orElseThrow(BookException::new);
+    }
+
+    List<Book> searchBooks(BookSearchRequest request) {
+        return getAllBooks().stream()
+>>>>>>> Enable_Spring_Boot_Actuator
                 .filter(book -> hasAuthor(book, request.author()))
                 .filter(book -> hasIsbn(book, request.isbn()))
                 .toList();
@@ -36,7 +57,6 @@ class BookService {
 
     Book createBook(Book book) {
         bookRepository.save(book);
-
         return book;
     }
 

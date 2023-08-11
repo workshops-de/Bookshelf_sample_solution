@@ -37,6 +37,7 @@ class BookRestControllerMockitoIntegrationTest {
     @Test
     @WithMockUser
     void getAllBooks() throws Exception {
+<<<<<<< HEAD
         Mockito.when(bookService.getBooks()).thenReturn(Collections.singletonList(new Book()));
 
         mockMvc.perform(MockMvcRequestBuilders.get(BookRestController.REQUEST_URL))
@@ -46,6 +47,9 @@ class BookRestControllerMockitoIntegrationTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(1)));
 
         Mockito.when(bookService.getBooks()).thenReturn(Collections.emptyList());
+=======
+        Mockito.when(bookService.getAllBooks()).thenReturn(null);
+>>>>>>> Enable_Spring_Boot_Actuator
 
         mockMvc.perform(MockMvcRequestBuilders.get("/book"))
                 .andDo(MockMvcResultHandlers.print())
