@@ -8,6 +8,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 
 import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -22,17 +23,13 @@ class BookRestControllerMockitoTest {
 
     @Test
     void getAllBooks() {
-<<<<<<< HEAD
-        Mockito.when(bookService.getBooks()).thenReturn(Collections.singletonList(new Book()));
-=======
-        Mockito.when(bookService.getAllBooks()).thenReturn(Collections.emptyList());
->>>>>>> Enable_Spring_Boot_Actuator
+        Mockito.when(bookService.getAllBooks()).thenReturn(List.of(new Book()));
 
         assertNotNull(bookRestController.getAllBooks().getBody());
         assertEquals(HttpStatus.OK, bookRestController.getAllBooks().getStatusCode());
         assertEquals(1, bookRestController.getAllBooks().getBody().size());
 
-        Mockito.when(bookService.getBooks()).thenReturn(Collections.emptyList());
+        Mockito.when(bookService.getAllBooks()).thenReturn(Collections.emptyList());
 
         assertNull(bookRestController.getAllBooks().getBody());
         assertEquals(HttpStatus.NOT_FOUND, bookRestController.getAllBooks().getStatusCode());

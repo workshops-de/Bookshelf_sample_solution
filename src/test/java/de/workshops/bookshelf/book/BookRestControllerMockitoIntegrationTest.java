@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.Collections;
+import java.util.List;
 
 @WebMvcTest(
         controllers = BookRestController.class,
@@ -37,8 +38,7 @@ class BookRestControllerMockitoIntegrationTest {
     @Test
     @WithMockUser
     void getAllBooks() throws Exception {
-<<<<<<< HEAD
-        Mockito.when(bookService.getBooks()).thenReturn(Collections.singletonList(new Book()));
+        Mockito.when(bookService.getAllBooks()).thenReturn(List.of(new Book()));
 
         mockMvc.perform(MockMvcRequestBuilders.get(BookRestController.REQUEST_URL))
                 .andDo(MockMvcResultHandlers.print())
@@ -46,10 +46,7 @@ class BookRestControllerMockitoIntegrationTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
                 .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(1)));
 
-        Mockito.when(bookService.getBooks()).thenReturn(Collections.emptyList());
-=======
-        Mockito.when(bookService.getAllBooks()).thenReturn(null);
->>>>>>> Enable_Spring_Boot_Actuator
+        Mockito.when(bookService.getAllBooks()).thenReturn(Collections.emptyList());
 
         mockMvc.perform(MockMvcRequestBuilders.get("/book"))
                 .andDo(MockMvcResultHandlers.print())

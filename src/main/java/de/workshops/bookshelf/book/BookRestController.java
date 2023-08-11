@@ -28,15 +28,9 @@ public class BookRestController {
 
     @GetMapping
     public ResponseEntity<List<Book>> getAllBooks() {
-<<<<<<< HEAD
-        List<Book> result = bookService.getBooks();
+        List<Book> result = bookService.getAllBooks();
         if (result.isEmpty()) {
             return ResponseEntity.notFound().build();
-=======
-        List<Book> result = bookService.getAllBooks();
-        if (result == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
->>>>>>> Enable_Spring_Boot_Actuator
         } else {
             return ResponseEntity.ok(result);
         }
@@ -65,7 +59,7 @@ public class BookRestController {
 
     @DeleteMapping("/{isbn}")
     public ResponseEntity<String> deleteBook(@PathVariable String isbn) throws BookException {
-        bookService.deleteBook(bookService.getSingleBook(isbn));
+        bookService.deleteBook(bookService.searchBookByIsbn(isbn));
 
         return ResponseEntity.ok("OK");
     }
