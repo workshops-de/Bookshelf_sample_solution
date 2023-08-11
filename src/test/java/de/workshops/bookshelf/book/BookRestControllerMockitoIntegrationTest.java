@@ -34,7 +34,7 @@ class BookRestControllerMockitoIntegrationTest {
     @Test
     @WithMockUser
     void getAllBooks() throws Exception {
-        Mockito.when(bookService.getBooks()).thenReturn(null);
+        Mockito.when(bookService.getAllBooks()).thenReturn(null);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/book"))
                 .andDo(MockMvcResultHandlers.print())
