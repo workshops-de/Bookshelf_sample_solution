@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -126,6 +127,9 @@ class BookRestControllerIntegrationTest {
         String jsonPayload = mvcResult.getResponse().getContentAsString();
 
         Book book = objectMapper.readValue(jsonPayload, Book.class);
-        assertEquals(expectedBook, book);
+        assertThat(book)
+                .usingRecursiveComparison()
+                .ignoringFields("id")
+                .isEqualTo(expectedBook);
     }
 }
