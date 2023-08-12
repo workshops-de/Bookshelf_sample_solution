@@ -1,6 +1,7 @@
 package de.workshops.bookshelf.book;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.workshops.bookshelf.config.JacksonTestConfiguration;
 import io.restassured.RestAssured;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -24,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
+@Import(JacksonTestConfiguration.class)
 class BookRestControllerIntegrationTest {
 
     @Autowired
@@ -107,6 +110,7 @@ class BookRestControllerIntegrationTest {
                                     "description": "%s"
                                 }""".formatted(isbn, title, author, description))
                         .contentType(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
         String jsonPayload = mvcResult.getResponse().getContentAsString();
