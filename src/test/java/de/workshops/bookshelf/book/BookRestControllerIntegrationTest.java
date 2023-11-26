@@ -1,5 +1,12 @@
 package de.workshops.bookshelf.book;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.workshops.bookshelf.config.JacksonTestConfiguration;
 import io.restassured.RestAssured;
@@ -21,13 +28,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
@@ -137,5 +137,12 @@ class BookRestControllerIntegrationTest {
                 .usingRecursiveComparison()
                 .ignoringFields("id")
                 .isEqualTo(expectedBook);
+
+        // Restore previous database state.
+        mockMvc.perform(MockMvcRequestBuilders.delete("/book/{isbn}", book.getIsbn())
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(csrf()))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 }

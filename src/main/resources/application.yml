@@ -17,12 +17,9 @@ spring:
     # set PG_PASSWORD in your environment, e.g., by running "export PG_PASSWORD=..." in the command line
     password: ${PG_PASSWORD}
   jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
     open-in-view: false
     hibernate:
       ddl-auto: validate
-  liquibase:
-    drop-first: true
 
 management:
   endpoints:

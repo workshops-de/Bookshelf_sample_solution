@@ -29,6 +29,9 @@ class BookRepositoryTest {
         assertNotNull(books);
         assertEquals(4, books.size());
         assertEquals(book.getTitle(), books.get(3).getTitle());
+
+        // Restore previous database state.
+        bookRepository.delete(book);
     }
 
     @Test
