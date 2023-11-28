@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 
 @TestConfiguration
 public class JacksonTestConfiguration {
-   @Bean
+    @Bean
     public Jackson2ObjectMapperBuilderCustomizer jsonCustomizer() {
         return builder -> builder.featuresToEnable(SerializationFeature.INDENT_OUTPUT);
     }
