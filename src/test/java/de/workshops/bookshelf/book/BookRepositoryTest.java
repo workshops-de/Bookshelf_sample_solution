@@ -1,15 +1,13 @@
 package de.workshops.bookshelf.book;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-
-import java.util.List;
-import java.util.stream.StreamSupport;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -23,9 +21,10 @@ class BookRepositoryTest {
         String isbn = "123-4567890";
         Book book = buildAndSaveBook(isbn);
 
-        List<Book> books = StreamSupport
-                .stream(bookRepository.findAll().spliterator(), false)
-                .toList();
+        List<Book> books = bookRepository
+            .findAll()
+            .stream()
+            .toList();
 
         assertNotNull(books);
         assertEquals(4, books.size());
