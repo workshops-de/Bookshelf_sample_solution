@@ -19,7 +19,6 @@ spring:
     hikari:
       maximum-pool-size: 1 # disabling concurrent connections due to free plan limitations
   jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
     open-in-view: false
     hibernate:
       # Re-generating the DDL upon each application start to account for data model changes.
