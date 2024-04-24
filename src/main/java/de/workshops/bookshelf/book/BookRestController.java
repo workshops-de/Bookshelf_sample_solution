@@ -66,6 +66,7 @@ class BookRestController {
     }
 
     @DeleteMapping("/{isbn}")
+    @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<String> deleteBook(@PathVariable String isbn) throws BookException {
         bookService.deleteBook(bookService.searchBookByIsbn(isbn));
 
