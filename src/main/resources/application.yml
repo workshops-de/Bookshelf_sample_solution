@@ -12,14 +12,12 @@ server:
 spring:
   datasource:
     url: jdbc:h2:./testdb;DB_CLOSE_DELAY=-1;AUTO_SERVER=TRUE
-    driver-class-name: org.h2.Driver
     username: sa
     password: password
   sql:
     init:
       mode: always
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
     open-in-view: false
     hibernate:
       # Re-generating the DDL upon each application start to account for data model changes.
