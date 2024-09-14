@@ -12,7 +12,6 @@ server:
 spring:
   datasource:
     url:  jdbc:postgresql://roasted-tomato.db.elephantsql.com:5432/ooqpwbmi # adapt URL to your database
-    driver-class-name: org.postgresql.Driver
     username: ooqpwbmi # adapt username accordingly
     # set PG_PASSWORD in your environment, e.g., by running "export PG_PASSWORD=..." in the command line
     password: ${PG_PASSWORD}
