@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -28,7 +28,7 @@ class BookRestControllerMockitoIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @MockitoBean
     private BookService bookService;
 
     @Test
@@ -36,7 +36,7 @@ class BookRestControllerMockitoIntegrationTest {
     void getAllBooks() throws Exception {
         Mockito.when(bookService.getAllBooks()).thenReturn(null);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/book"))
+        mockMvc.perform(MockMvcRequestBuilders.get(BookRestController.REQUEST_URL))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
