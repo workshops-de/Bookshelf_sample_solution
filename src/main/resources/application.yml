@@ -11,8 +11,8 @@ server:
 
 spring:
   datasource:
-    url:  jdbc:postgresql://roasted-tomato.db.elephantsql.com:5432/ooqpwbmi # adapt URL to your database
-    username: ooqpwbmi # adapt username accordingly
+    url: jdbc:postgresql://34.79.208.232:5432/spring_boot_workshop_25_06_2025_db_trainer # adapt URL to your database
+    username: spring_boot_workshop_25_06_2025_trainer # adapt username accordingly
     # set PG_PASSWORD in your environment, e.g., by running "export PG_PASSWORD=..." in the command line
     password: ${PG_PASSWORD}
     hikari:
