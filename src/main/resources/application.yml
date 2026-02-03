@@ -12,7 +12,7 @@ server:
 spring:
   datasource:
     url: jdbc:postgresql://34.79.208.232:5432/spring_boot_workshop_02_2026_db_trainer # adapt URL to your database
-    username: spring_boot_workshop_02_2026_db_trainer # adapt username accordingly
+    username: spring_boot_workshop_02_2026_trainer # adapt username accordingly
     # set PG_PASSWORD in your environment, e.g., by running "export PG_PASSWORD=..." in the command line
     password: ${PG_PASSWORD}
   jpa:
