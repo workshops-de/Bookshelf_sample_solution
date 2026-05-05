@@ -1,0 +1,51 @@
+databaseChangeLog:
+  - changeSet:
+      id: createTableUsers
+      author: workshops
+      changes:
+        - createTable:
+            tableName: bookshelf_user
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: username
+                  type: varchar
+                  constraints:
+                    unique: true
+              - column:
+                  name: password
+                  type: varchar
+              - column:
+                  name: firstname
+                  type: varchar
+              - column:
+                  name: lastname
+                  type: varchar
+              - column:
+                  name: role
+                  type: varchar
+              - column:
+                  name: lastlogin
+                  type: datetime
+      rollback:
+        - dropTable:
+            tableName: bookshelf_user
+
+  - changeSet:
+      id: createDefaultUsers
+      author: workshops
+      changes:
+        - sql:
+            sql: >
+              INSERT INTO bookshelf_user (username, password, firstname, lastname, role)
+              VALUES ('dbUser', 'password', 'Default', 'Default', 'ROLE_USER');
+              INSERT INTO bookshelf_user (username, password, firstname, lastname, role)
+              VALUES ('dbAdmin', 'admin', 'Default', 'Default', 'ROLE_ADMIN');
+      rollback:
+        - sql:
+            sql: DELETE FROM bookshelf_user;
