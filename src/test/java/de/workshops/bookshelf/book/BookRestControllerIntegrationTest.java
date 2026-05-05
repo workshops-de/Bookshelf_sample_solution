@@ -27,11 +27,15 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.testcontainers.utility.TestcontainersConfiguration;
 import tools.jackson.databind.json.JsonMapper;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-@Import(JacksonTestConfiguration.class)
+@Import({
+    JacksonTestConfiguration.class,
+    TestcontainersConfiguration.class
+})
 class BookRestControllerIntegrationTest {
 
     @Autowired
@@ -118,15 +122,15 @@ class BookRestControllerIntegrationTest {
         expectedBook.setDescription(description);
 
         var mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/book")
-                        .content("""
-                                {
-                                    "isbn": "%s",
-                                    "title": "%s",
-                                    "author": "%s",
-                                    "description": "%s"
-                                }""".formatted(isbn, title, author, description))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .with(csrf()))
+                .content("""
+                        {
+                            "isbn": "%s",
+                            "title": "%s",
+                            "author": "%s",
+                            "description": "%s"
+                        }""".formatted(isbn, title, author, description))
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(csrf()))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();

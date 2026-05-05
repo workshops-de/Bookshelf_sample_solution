@@ -1,27 +1,38 @@
-application:
-  title: '@project.name@'
-  version: '@project.version@'
-
-bookshelf:
-  some-number: 11
-  some-text: More information
-
-server:
-  port: 8080
-
 spring:
+  application:
+    name: '@project.name@'
   datasource:
-    url: jdbc:postgresql://34.79.208.232:5432/spring_boot_workshop_02_2026_db_trainer # adapt URL to your database
-    username: spring_boot_workshop_02_2026_trainer # adapt username accordingly
-    # set PG_PASSWORD in your environment, e.g., by running "export PG_PASSWORD=..." in the command line
-    password: ${PG_PASSWORD}
+    url: jdbc:postgresql://localhost:5432/bookshelf
+    username: bookshelf
+    password: bookshelf
   jpa:
     open-in-view: false
     hibernate:
       ddl-auto: validate
+
+server:
+  port: 8080
 
 management:
   endpoints:
     web:
       exposure:
         include: "*"
+
+application:
+  title: '@project.name@'
+  version: '@project.version@'
+  credentials:
+    admin:
+      username: dbAdmin
+      password: ${ADMIN_PASSWORD}
+    user:
+      username: dbUser
+      password: ${USER_PASSWORD}
+
+bookshelf:
+  some-number: 11
+  some-text: More information
+  some-list:
+    - First entry
+    - Second entry

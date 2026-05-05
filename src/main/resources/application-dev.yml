@@ -1,0 +1,3 @@
+application:
+  custom-open-api-config:
+    enabled: true

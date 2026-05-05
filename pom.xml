@@ -17,7 +17,6 @@
 		<java.version>21</java.version>
 		<springdoc.version>3.0.3</springdoc.version>
 		<schematic.version>1.1.0</schematic.version>
-		<spring-boot-startup-report.version>0.2.0</spring-boot-startup-report.version>
 		<rest-assured.version>6.0.0</rest-assured.version>
 	</properties>
 	<dependencies>
@@ -44,8 +43,8 @@
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.liquibase</groupId>
-			<artifactId>liquibase-core</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-liquibase</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.postgresql</groupId>
@@ -70,6 +69,11 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-liquibase-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>io.rest-assured</groupId>
 			<artifactId>rest-assured</artifactId>
 			<version>${rest-assured.version}</version>
@@ -84,6 +88,21 @@
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-testcontainers</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>testcontainers-junit-jupiter</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>testcontainers-postgresql</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<!-- We're keeping the H2 driver for database test purposes. -->
@@ -102,11 +121,6 @@
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 			<version>${springdoc.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>com.maciejwalkowiak.spring</groupId>
-			<artifactId>spring-boot-startup-report</artifactId>
-			<version>${spring-boot-startup-report.version}</version>
-		</dependency>
 
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -121,6 +135,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-docker-compose</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>

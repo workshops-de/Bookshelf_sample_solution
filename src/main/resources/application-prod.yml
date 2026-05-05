@@ -1,5 +1,6 @@
-server:
-  port: 8090
 springdoc:
   api-docs:
     enabled: false
+
+server:
+  port: 8090
