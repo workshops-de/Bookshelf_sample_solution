@@ -36,3 +36,5 @@ bookshelf:
   some-list:
     - First entry
     - Second entry
+
+logging.level.org.springframework.security: DEBUG

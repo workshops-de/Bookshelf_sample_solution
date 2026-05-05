@@ -6,8 +6,10 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 
 import de.workshops.bookshelf.config.JacksonTestConfiguration;
+import de.workshops.bookshelf.config.TestcontainersConfiguration;
 import io.restassured.RestAssured;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +20,6 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.web.servlet.MockMvc;
@@ -27,7 +28,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.testcontainers.utility.TestcontainersConfiguration;
 import tools.jackson.databind.json.JsonMapper;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -59,7 +59,6 @@ class BookRestControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser
     void getAllBooks() throws Exception {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/book"))
                 .andDo(MockMvcResultHandlers.print())
@@ -75,7 +74,6 @@ class BookRestControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser
     void testWithRestAssuredMockMvc() {
         RestAssuredMockMvc.standaloneSetup(
                 MockMvcBuilders
@@ -108,7 +106,6 @@ class BookRestControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser(roles = {"ADMIN"})
     void createBook() throws Exception {
         String author = "Eric Evans";
         String title = "Domain-Driven Design: Tackling Complexity in the Heart of Software";
@@ -130,6 +127,7 @@ class BookRestControllerIntegrationTest {
                             "description": "%s"
                         }""".formatted(isbn, title, author, description))
                 .contentType(MediaType.APPLICATION_JSON)
+                .with(user("admin").roles("ADMIN"))
                 .with(csrf()))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -145,6 +143,7 @@ class BookRestControllerIntegrationTest {
         // Restore previous database state.
         mockMvc.perform(MockMvcRequestBuilders.delete("/book/{isbn}", book.getIsbn())
                 .contentType(MediaType.APPLICATION_JSON)
+                .with(user("admin").roles("ADMIN"))
                 .with(csrf()))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk());
