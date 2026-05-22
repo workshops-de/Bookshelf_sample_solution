@@ -1,7 +1,5 @@
 package de.workshops.bookshelf.book;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -14,19 +12,30 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.json.JsonMapper;
 
 @RestController
 @RequestMapping("/book")
 @Validated
 public class BookRestController {
 
-    private final ObjectMapper mapper;
+    private final JsonMapper mapper;
 
     private final ResourceLoader resourceLoader;
 
     private List<Book> books;
 
-    public BookRestController(ObjectMapper mapper, ResourceLoader resourceLoader) {
+    public BookRestController(JsonMapper mapper, ResourceLoader resourceLoader) {
         this.mapper = mapper;
         this.resourceLoader = resourceLoader;
     }
