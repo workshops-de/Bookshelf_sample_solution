@@ -26,7 +26,7 @@ public class WebSecurityConfig {
     private final JdbcTemplate jdbcTemplate;
 
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         // see https://docs.spring.io/spring-security/reference/5.8/migration/servlet/exploits.html,
         // https://docs.spring.io/spring-security/reference/5.8/migration/servlet/exploits.html#_i_am_using_angularjs_or_another_javascript_framework,
         // and https://github.com/spring-projects/spring-security/issues/12915#issuecomment-1482669321
