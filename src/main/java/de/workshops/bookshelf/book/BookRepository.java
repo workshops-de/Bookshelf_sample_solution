@@ -1,20 +1,19 @@
 package de.workshops.bookshelf.book;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
+import java.io.IOException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Repository;
-
-import java.io.IOException;
-import java.util.List;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.json.JsonMapper;
 
 @Repository
 @RequiredArgsConstructor
 class BookRepository {
 
-    private final ObjectMapper mapper;
+    private final JsonMapper mapper;
     private final ResourceLoader resourceLoader;
 
     private List<Book> books;
