@@ -10,15 +10,15 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 @RestController
 @RequestMapping("/book")
 @RequiredArgsConstructor
 @Validated
 public class BookRestController {
 
+
     private final BookService bookService;
-    
+
     @GetMapping
     public List<Book> getAllBooks() {
         return bookService.getAllBooks();
