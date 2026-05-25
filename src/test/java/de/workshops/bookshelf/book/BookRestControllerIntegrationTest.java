@@ -5,6 +5,8 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 
 import de.workshops.bookshelf.config.JacksonTestConfiguration;
 import io.restassured.RestAssured;
@@ -17,11 +19,15 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
+import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import tools.jackson.databind.json.JsonMapper;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -51,12 +57,16 @@ class BookRestControllerIntegrationTest {
 
     @Test
     void getAllBooks() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/book"))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(3)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].title", is("Clean Code")))
-                .andReturn();
+        MvcResult mvcResult = mockMvc.perform(
+            MockMvcRequestBuilders
+                .get("/book")
+                .with(user("user"))
+            )
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(3)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$[1].title", is("Clean Code")))
+            .andReturn();
         String jsonPayload = mvcResult.getResponse().getContentAsString();
 
         Book[] books = jsonMapper.readValue(jsonPayload, Book[].class);
@@ -65,6 +75,7 @@ class BookRestControllerIntegrationTest {
     }
 
     @Test
+    @WithMockUser
     void testWithRestAssuredMockMvc() {
         RestAssuredMockMvc.standaloneSetup(
                 MockMvcBuilders
@@ -110,15 +121,16 @@ class BookRestControllerIntegrationTest {
         expectedBook.setDescription(description);
 
         var mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/book")
-                        .content("""
-                                {
-                                    "isbn": "%s",
-                                    "title": "%s",
-                                    "author": "%s",
-                                    "description": "%s"
-                                }""".formatted(isbn, title, author, description))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .with(csrf()))
+                .content("""
+                        {
+                            "isbn": "%s",
+                            "title": "%s",
+                            "author": "%s",
+                            "description": "%s"
+                        }""".formatted(isbn, title, author, description))
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(user("user"))
+                .with(csrf()))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
