@@ -1,15 +1,22 @@
 package de.workshops.bookshelf.book;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+
 import de.workshops.bookshelf.config.JacksonTestConfiguration;
 import io.restassured.RestAssured;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -21,13 +28,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import tools.jackson.databind.json.JsonMapper;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
@@ -44,7 +45,7 @@ class BookRestControllerIntegrationTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private ObjectMapper objectMapper;
+    private JsonMapper jsonMapper;
 
     @LocalServerPort
     private int port;
@@ -55,17 +56,20 @@ class BookRestControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser
     void getAllBooks() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/book"))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(3)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].title", is("Clean Code")))
-                .andReturn();
+        MvcResult mvcResult = mockMvc.perform(
+            MockMvcRequestBuilders
+                .get("/book")
+                .with(user("user"))
+            )
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(3)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$[1].title", is("Clean Code")))
+            .andReturn();
         String jsonPayload = mvcResult.getResponse().getContentAsString();
 
-        Book[] books = objectMapper.readValue(jsonPayload, Book[].class);
+        Book[] books = jsonMapper.readValue(jsonPayload, Book[].class);
         assertEquals(3, books.length);
         assertEquals("Clean Code", books[1].getTitle());
     }
@@ -82,7 +86,7 @@ class BookRestControllerIntegrationTest {
                 given().
                 log().all().
                 when().
-                get(BookRestController.REQUEST_URL).
+                get("/book").
                 then().
                 log().all().
                 statusCode(200).
@@ -96,7 +100,7 @@ class BookRestControllerIntegrationTest {
                 auth().basic("dbUser", "workshops").
                 log().all().
                 when().
-                get(BookRestController.REQUEST_URL).
+                get("/book").
                 then().
                 log().all().
                 statusCode(200).
@@ -104,7 +108,6 @@ class BookRestControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser(roles = {"ADMIN"})
     void createBook() throws Exception {
         String author = "Eric Evans";
         String title = "Domain-Driven Design: Tackling Complexity in the Heart of Software";
@@ -118,24 +121,25 @@ class BookRestControllerIntegrationTest {
         expectedBook.setDescription(description);
 
         var mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/book")
-                        .content("""
-                                {
-                                    "isbn": "%s",
-                                    "title": "%s",
-                                    "author": "%s",
-                                    "description": "%s"
-                                }""".formatted(isbn, title, author, description))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .with(csrf()))
+                .content("""
+                        {
+                            "isbn": "%s",
+                            "title": "%s",
+                            "author": "%s",
+                            "description": "%s"
+                        }""".formatted(isbn, title, author, description))
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(user("admin").roles("ADMIN"))
+                .with(csrf()))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
         String jsonPayload = mvcResult.getResponse().getContentAsString();
 
-        Book book = objectMapper.readValue(jsonPayload, Book.class);
+        Book book = jsonMapper.readValue(jsonPayload, Book.class);
         assertThat(book)
-                .usingRecursiveComparison()
-                .ignoringFields("id")
-                .isEqualTo(expectedBook);
+            .usingRecursiveComparison()
+            .ignoringFields("id")
+            .isEqualTo(expectedBook);
     }
 }
