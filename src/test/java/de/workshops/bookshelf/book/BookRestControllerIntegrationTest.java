@@ -1,15 +1,19 @@
 package de.workshops.bookshelf.book;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import de.workshops.bookshelf.config.JacksonTestConfiguration;
 import io.restassured.RestAssured;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -17,11 +21,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import tools.jackson.databind.json.JsonMapper;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
@@ -35,7 +35,7 @@ class BookRestControllerIntegrationTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private ObjectMapper objectMapper;
+    private JsonMapper jsonMapper;
 
     @LocalServerPort
     private int port;
@@ -55,7 +55,7 @@ class BookRestControllerIntegrationTest {
                 .andReturn();
         String jsonPayload = mvcResult.getResponse().getContentAsString();
 
-        Book[] books = objectMapper.readValue(jsonPayload, Book[].class);
+        Book[] books = jsonMapper.readValue(jsonPayload, Book[].class);
         assertEquals(3, books.length);
         assertEquals("Clean Code", books[1].getTitle());
     }
@@ -67,7 +67,7 @@ class BookRestControllerIntegrationTest {
                 given().
                 log().all().
                 when().
-                get(BookRestController.REQUEST_URL).
+                get("/book").
                 then().
                 log().all().
                 statusCode(200).
@@ -80,7 +80,7 @@ class BookRestControllerIntegrationTest {
                 given().
                 log().all().
                 when().
-                get(BookRestController.REQUEST_URL).
+                get("/book").
                 then().
                 log().all().
                 statusCode(200).
@@ -114,7 +114,7 @@ class BookRestControllerIntegrationTest {
                 .andReturn();
         String jsonPayload = mvcResult.getResponse().getContentAsString();
 
-        Book book = objectMapper.readValue(jsonPayload, Book.class);
+        Book book = jsonMapper.readValue(jsonPayload, Book.class);
         assertEquals(expectedBook, book);
     }
 }
