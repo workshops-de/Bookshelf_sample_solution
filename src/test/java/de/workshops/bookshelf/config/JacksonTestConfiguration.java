@@ -1,14 +1,14 @@
 package de.workshops.bookshelf.config;
 
-import com.fasterxml.jackson.databind.SerializationFeature;
-import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
+import org.springframework.boot.jackson.autoconfigure.JsonMapperBuilderCustomizer;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import tools.jackson.databind.SerializationFeature;
 
 @TestConfiguration
 public class JacksonTestConfiguration {
     @Bean
-    public Jackson2ObjectMapperBuilderCustomizer jsonCustomizer() {
-        return builder -> builder.featuresToEnable(SerializationFeature.INDENT_OUTPUT);
+    public JsonMapperBuilderCustomizer jsonCustomizer() {
+        return builder -> builder.enable(SerializationFeature.INDENT_OUTPUT);
     }
 }
