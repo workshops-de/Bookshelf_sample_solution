@@ -37,7 +37,7 @@ class BookRestControllerMockitoIntegrationTest {
     void getAllBooks() throws Exception {
         Mockito.when(bookService.getAllBooks()).thenReturn(List.of(new Book()));
 
-        mockMvc.perform(MockMvcRequestBuilders.get(BookRestController.REQUEST_URL))
+        mockMvc.perform(MockMvcRequestBuilders.get("/book"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isArray())

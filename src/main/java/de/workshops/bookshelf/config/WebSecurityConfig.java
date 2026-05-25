@@ -21,12 +21,12 @@ import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 
 @Configuration
 @RequiredArgsConstructor
-public class WebSecurityConfig {
+class WebSecurityConfig {
 
     private final JdbcTemplate jdbcTemplate;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain filterChain(HttpSecurity http) {
         // see https://docs.spring.io/spring-security/reference/5.8/migration/servlet/exploits.html,
         // https://docs.spring.io/spring-security/reference/5.8/migration/servlet/exploits.html#_i_am_using_angularjs_or_another_javascript_framework,
         // and https://github.com/spring-projects/spring-security/issues/12915#issuecomment-1482669321
@@ -55,18 +55,22 @@ public class WebSecurityConfig {
                 .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.successHandler(
                         (request, response, authentication) -> {
                             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-                            jdbcTemplate.update(
+                            if (userDetails != null) {
+                                jdbcTemplate.update(
                                     "UPDATE bookshelf_user SET lastlogin = NOW() WHERE username = ?",
                                     userDetails.getUsername()
-                            );
-                            response.sendRedirect("/success");
+                                );
+                                response.sendRedirect("/success");
+                            } else {
+                                response.sendRedirect("/error");
+                            }
                         }
                 ))
                 .build();
     }
 
     @Bean
-    public UserDetailsService userDetailsService() {
+    UserDetailsService userDetailsService() {
         return username -> {
             String sql = "SELECT * FROM bookshelf_user WHERE username = ?";
 
@@ -81,7 +85,7 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }

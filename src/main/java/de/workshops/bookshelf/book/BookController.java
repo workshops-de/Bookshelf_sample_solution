@@ -7,11 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping(BookController.REQUEST_URL)
+@RequestMapping("/")
 @RequiredArgsConstructor
 class BookController {
-
-    static final String REQUEST_URL = "/";
 
     private final BookService bookService;
 

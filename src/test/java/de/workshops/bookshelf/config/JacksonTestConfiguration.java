@@ -7,8 +7,9 @@ import tools.jackson.databind.SerializationFeature;
 
 @TestConfiguration
 public class JacksonTestConfiguration {
+
     @Bean
-    public JsonMapperBuilderCustomizer jsonCustomizer() {
+    JsonMapperBuilderCustomizer jsonCustomizer() {
         return builder -> builder.enable(SerializationFeature.INDENT_OUTPUT);
     }
 }

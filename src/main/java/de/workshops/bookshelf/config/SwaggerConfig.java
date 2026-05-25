@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Profile;
 
 @Configuration
 @Profile("dev")
-public class SwaggerConfig {
+class SwaggerConfig {
 
     @Bean
     GroupedOpenApi appOpenApi() {
@@ -20,7 +20,7 @@ public class SwaggerConfig {
     }
 
     @Bean
-    public OpenAPI api() {
+    OpenAPI api() {
         return new OpenAPI()
                 .info(
                         new Info()

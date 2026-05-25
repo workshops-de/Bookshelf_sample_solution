@@ -84,7 +84,7 @@ class BookRestControllerIntegrationTest {
                 given().
                 log().all().
                 when().
-                get(BookRestController.REQUEST_URL).
+                get("/book").
                 then().
                 log().all().
                 statusCode(200).
@@ -98,7 +98,7 @@ class BookRestControllerIntegrationTest {
                 auth().basic("dbUser", "workshops").
                 log().all().
                 when().
-                get(BookRestController.REQUEST_URL).
+                get("/book").
                 then().
                 log().all().
                 statusCode(200).

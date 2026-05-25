@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 @ConfigurationProperties("application")
-public class BookshelfApplicationProperties {
+class BookshelfApplicationProperties {
 
     private String title;
 
@@ -23,7 +23,7 @@ public class BookshelfApplicationProperties {
 
     @Setter
     @Getter
-    public static class CustomOpenApiConfig {
+    static class CustomOpenApiConfig {
 
         private boolean enabled;
     }

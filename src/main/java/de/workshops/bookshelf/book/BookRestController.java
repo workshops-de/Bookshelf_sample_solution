@@ -24,13 +24,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(BookRestController.REQUEST_URL)
+@RequestMapping("/book")
 @RequiredArgsConstructor
 @Validated
 @CrossOrigin(origins = { "http://localhost:4200", "http://localhost:3000" })
 class BookRestController {
-
-    static final String REQUEST_URL = "/book";
 
     private final BookService bookService;
 
