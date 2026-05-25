@@ -10,14 +10,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 @RestController
-@RequestMapping(BookRestController.REQUEST_URL)
+@RequestMapping("/book")
 @RequiredArgsConstructor
 @Validated
 public class BookRestController {
-
-    static final String REQUEST_URL = "/book";
 
     private final BookService bookService;
 
