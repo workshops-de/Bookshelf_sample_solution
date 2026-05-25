@@ -1,8 +1,7 @@
 package de.workshops.bookshelf.book;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -14,10 +13,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @SpringBootTest
 class BookRestControllerMockitoReflectionTestUtilsTest {
 
-    @Mock
+    @Autowired
     private BookService bookService;
 
-    @InjectMocks
+    @Autowired
     private BookRestController bookRestController;
 
     @Test
