@@ -129,7 +129,7 @@ class BookRestControllerIntegrationTest {
                             "description": "%s"
                         }""".formatted(isbn, title, author, description))
                 .contentType(MediaType.APPLICATION_JSON)
-                .with(user("user"))
+                .with(user("admin").roles("ADMIN"))
                 .with(csrf()))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
