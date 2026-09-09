@@ -15,7 +15,7 @@
 	<description>Sample project for Spring Boot Workshop</description>
 	<properties>
 		<java.version>21</java.version>
-		<springdoc.version>3.1.0</springdoc.version>
+		<springdoc.version>3.1.1</springdoc.version>
 		<schematic.version>1.1.0</schematic.version>
 		<rest-assured.version>6.0.1</rest-assured.version>
 	</properties>
